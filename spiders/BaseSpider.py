@@ -17,7 +17,7 @@ class iimediaBase(object):
         self.allow_domains = []
         self.login  = ""
         self.count  = 0
-        self.cookie = None
+        self.cookie = ""
 
 
 
