@@ -10,8 +10,6 @@ import requests
 from middles.middlePool import userAgent, ipProxy
 import jsonpath, json, random, time
 ## 基础爬虫类
-scookie ="UM_distinctid=1667fd1f2c439b-02718094f0fc62-43450521-1fa400-1667fd1f2c51e7; _ga=GA1.2.66068986.1539742758; cloud-anonymous-token=233be42c12f349a6aa0c3e12c4c9eabf; _gid=GA1.2.1850678946.1540534614; cloud-sso-token=A5F4621C68EC2C40504EB3E57B1EDD35"
-
 class iimediaBase(object):
     def __init__(self):
         self.name = self.__class__.__name__
@@ -19,6 +17,7 @@ class iimediaBase(object):
         self.allow_domains = []
         self.login  = ""
         self.count  = 0
+        self.cookie = None
 
 
 
@@ -30,7 +29,8 @@ class iimediaBase(object):
             try:
                 response = requests.get(url=url, proxies = ipProxy.ipRandom,
                                         timeout=60,
-                              headers={"cookie":self.cookie, "user-agent":userAgent.user_agent})
+                              headers={"cookie":self.cookie,
+                                       "user-agent":userAgent.user_agent})
                 self.count = 0
             except Exception as e:
                 print(e)
