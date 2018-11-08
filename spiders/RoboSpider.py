@@ -15,12 +15,7 @@ import json, time, random, re
 from middles.middlePool import userAgent
 
 
-user_data = {
-    "username": "18100226031",
-    "password": "z20180517!",
-    "rememberMe": "false",
-    "app": "cloud"
-}
+
 
 class Robo(iimediaBase):
     def __init__(self,hkey="Robo"):
