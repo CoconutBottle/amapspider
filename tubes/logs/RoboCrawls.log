@@ -1,0 +1,358 @@
+2018-10-26 18:01:13 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 18:01:13 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 18:01:13 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 18:01:14 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 882789 
+2018-10-26 18:01:14 INFO ['enter', u'882789', u'1010008397'] 
+2018-10-26 18:01:15 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 883335 
+2018-10-26 18:01:15 INFO ['enter', u'883335', u'1010008398'] 
+2018-10-26 18:01:16 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 884018 
+2018-10-26 18:01:16 INFO ['enter', u'884018', u'1010008399'] 
+2018-10-26 18:02:23 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 18:02:23 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 18:02:23 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 18:02:24 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 882789 
+2018-10-26 18:02:24 INFO ['enter', u'882789', u'1010008397'] 
+2018-10-26 18:02:25 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 883335 
+2018-10-26 18:02:25 INFO ['enter', u'883335', u'1010008398'] 
+2018-10-26 18:02:25 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 884018 
+2018-10-26 18:02:25 INFO ['enter', u'884018', u'1010008399'] 
+2018-10-26 18:02:26 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 4535 
+2018-10-26 18:02:26 INFO ['enter', u'4535', u'1010008400'] 
+2018-10-26 18:02:27 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 71805 
+2018-10-26 18:02:28 INFO ['enter', u'71805', u'1010008401'] 
+2018-10-26 19:32:54 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 19:32:54 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 19:32:54 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 19:32:55 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 882789 
+2018-10-26 19:32:55 INFO ['enter', u'882789', u'1010008397'] 
+2018-10-26 19:32:55 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 883335 
+2018-10-26 19:32:55 INFO ['enter', u'883335', u'1010008398'] 
+2018-10-26 19:32:56 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 884018 
+2018-10-26 19:32:56 INFO ['enter', u'884018', u'1010008399'] 
+2018-10-26 19:32:56 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 4535 
+2018-10-26 19:32:56 INFO ['enter', u'4535', u'1010008400'] 
+2018-10-26 19:32:57 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 71805 
+2018-10-26 19:32:57 INFO ['enter', u'71805', u'1010008401'] 
+2018-10-26 19:32:58 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 71365 
+2018-10-26 19:32:58 INFO ['enter', u'71365', u'1010008402'] 
+2018-10-26 19:32:59 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 71873 
+2018-10-26 19:32:59 INFO ['enter', u'71873', u'1010008403'] 
+2018-10-26 19:34:37 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 19:34:37 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 19:34:37 ERROR unexpected EOF while parsing (<string>, line 0) 
+2018-10-26 19:34:38 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 882789 
+2018-10-26 19:34:38 INFO ['enter', u'882789', u'1010008397'] 
+2018-10-26 19:34:39 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 883335 
+2018-10-26 19:34:39 INFO ['enter', u'883335', u'1010008398'] 
+2018-10-26 19:34:40 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 884018 
+2018-10-26 19:34:40 INFO ['enter', u'884018', u'1010008399'] 
+2018-10-26 19:34:41 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 4535 
+2018-10-26 19:34:41 INFO ['enter', u'4535', u'1010008400'] 
+2018-10-26 19:34:41 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 71805 
+2018-10-26 19:34:41 INFO ['enter', u'71805', u'1010008401'] 
+2018-10-26 19:34:42 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 71365 
+2018-10-26 19:34:42 INFO ['enter', u'71365', u'1010008402'] 
+2018-10-26 19:34:43 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 71873 
+2018-10-26 19:34:43 INFO ['enter', u'71873', u'1010008403'] 
+2018-10-26 19:34:44 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 72538 
+2018-10-26 19:34:44 INFO ['enter', u'72538', u'1010008404'] 
+2018-10-26 19:34:44 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 73097 
+2018-10-26 19:34:44 INFO ['enter', u'73097', u'1010008405'] 
+2018-10-26 19:34:45 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 73782 
+2018-10-26 19:34:45 INFO ['enter', u'73782', u'1010008406'] 
+2018-10-26 19:34:46 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 74352 
+2018-10-26 19:34:46 INFO ['enter', u'74352', u'1010008407'] 
+2018-10-26 19:34:46 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 75051 
+2018-10-26 19:34:46 INFO ['enter', u'75051', u'1010008408'] 
+2018-10-26 19:34:47 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 75609 
+2018-10-26 19:34:47 INFO ['enter', u'75609', u'1010008409'] 
+2018-10-26 19:34:48 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 59479 
+2018-10-26 19:34:48 INFO ['enter', u'59479', u'1010008410'] 
+2018-10-26 19:34:49 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 60193 
+2018-10-26 19:34:49 INFO ['enter', u'60193', u'1010008411'] 
+2018-10-26 19:34:49 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 60767 
+2018-10-26 19:34:49 INFO ['enter', u'60767', u'1010008412'] 
+2018-10-26 19:34:50 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 60298 
+2018-10-26 19:34:50 INFO ['enter', u'60298', u'1010008413'] 
+2018-10-26 19:34:50 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 60843 
+2018-10-26 19:34:50 INFO ['enter', u'60843', u'1010008414'] 
+2018-10-26 19:34:51 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 52073 
+2018-10-26 19:34:51 INFO ['enter', u'52073', u'1010008415'] 
+2018-10-26 19:34:52 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 52625 
+2018-10-26 19:34:52 INFO ['enter', u'52625', u'1010008416'] 
+2018-10-26 19:34:53 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 53271 
+2018-10-26 19:34:53 INFO ['enter', u'53271', u'1010008417'] 
+2018-10-26 19:34:54 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 53799 
+2018-10-26 19:34:54 INFO ['enter', u'53799', u'1010008418'] 
+2018-10-26 19:34:55 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 54529 
+2018-10-26 19:34:55 INFO ['enter', u'54529', u'1010008419'] 
+2018-10-26 19:34:56 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 38436 
+2018-10-26 19:34:56 INFO ['enter', u'38436', u'1010008420'] 
+2018-10-26 19:34:56 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 39120 
+2018-10-26 19:34:56 INFO ['enter', u'39120', u'1010008421'] 
+2018-10-26 19:34:58 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 39682 
+2018-10-26 19:34:58 INFO ['enter', u'39682', u'1010008422'] 
+2018-10-26 19:34:59 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 40413 
+2018-10-26 19:34:59 INFO ['enter', u'40413', u'1010008423'] 
+2018-10-26 19:35:00 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 40999 
+2018-10-26 19:35:00 INFO ['enter', u'40999', u'1010008424'] 
+2018-10-26 19:35:00 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 40503 
+2018-10-26 19:35:00 INFO ['enter', u'40503', u'1010008425'] 
+2018-10-26 19:35:01 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 41073 
+2018-10-26 19:35:01 INFO ['enter', u'41073', u'1010008426'] 
+2018-10-26 19:35:02 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 46634 
+2018-10-26 19:35:02 INFO ['enter', u'46634', u'1010000004'] 
+2018-10-26 19:35:03 INFO insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 46081 
+2018-10-26 19:35:03 INFO ['enter', u'46081', u'1010000005'] 
+2018-10-29 17:35:42 INFO RoboTubes.py[line:153] -----END----- 
+2018-10-29 17:53:48 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 338274 
+2018-10-29 17:54:51 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 338274 
+2018-10-29 17:55:08 INFO RoboTubes.py[line:134] ['enter', u'338274', u'4000000128'] 
+2018-10-29 17:55:10 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 330758 
+2018-10-29 17:55:10 INFO RoboTubes.py[line:134] ['enter', u'330758', u'4000000129'] 
+2018-10-29 17:55:12 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 396538 
+2018-10-29 17:55:12 INFO RoboTubes.py[line:134] ['enter', u'396538', u'4000000130'] 
+2018-10-29 17:55:16 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 398269 
+2018-10-29 17:55:16 INFO RoboTubes.py[line:134] ['enter', u'398269', u'4000000131'] 
+2018-10-29 17:55:18 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 397663 
+2018-10-29 17:55:18 INFO RoboTubes.py[line:134] ['enter', u'397663', u'4000000132'] 
+2018-10-29 17:55:20 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 390141 
+2018-10-29 17:55:20 INFO RoboTubes.py[line:134] ['enter', u'390141', u'4000000133'] 
+2018-10-29 17:55:23 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 389829 
+2018-10-29 17:55:23 INFO RoboTubes.py[line:134] ['enter', u'389829', u'4000000134'] 
+2018-10-29 17:55:25 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 391505 
+2018-10-29 17:55:25 INFO RoboTubes.py[line:134] ['enter', u'391505', u'4000000135'] 
+2018-10-29 17:55:27 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 390885 
+2018-10-29 17:55:27 INFO RoboTubes.py[line:134] ['enter', u'390885', u'4000000136'] 
+2018-10-29 17:55:29 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 392568 
+2018-10-29 17:55:29 INFO RoboTubes.py[line:134] ['enter', u'392568', u'4000000137'] 
+2018-10-29 17:55:31 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 392834 
+2018-10-29 17:55:31 INFO RoboTubes.py[line:134] ['enter', u'392834', u'4000000138'] 
+2018-10-29 17:55:33 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 392202 
+2018-10-29 17:55:33 INFO RoboTubes.py[line:134] ['enter', u'392202', u'4000000139'] 
+2018-10-29 17:55:35 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 377662 
+2018-10-29 17:55:35 INFO RoboTubes.py[line:134] ['enter', u'377662', u'4000000140'] 
+2018-10-29 17:55:37 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 377019 
+2018-10-29 17:55:37 INFO RoboTubes.py[line:134] ['enter', u'377019', u'4000000141'] 
+2018-10-29 17:55:40 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 378458 
+2018-10-29 17:55:40 INFO RoboTubes.py[line:134] ['enter', u'378458', u'4000000142'] 
+2018-10-29 17:55:42 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 377847 
+2018-10-29 17:55:42 INFO RoboTubes.py[line:134] ['enter', u'377847', u'4000000143'] 
+2018-10-29 17:55:45 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 379569 
+2018-10-29 17:55:45 INFO RoboTubes.py[line:134] ['enter', u'379569', u'4000000144'] 
+2018-10-29 17:55:47 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 378938 
+2018-10-29 17:55:47 INFO RoboTubes.py[line:134] ['enter', u'378938', u'4000000145'] 
+2018-10-29 17:55:49 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 371870 
+2018-10-29 17:55:49 INFO RoboTubes.py[line:134] ['enter', u'371870', u'4000000146'] 
+2018-10-29 17:55:51 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 371278 
+2018-10-29 17:55:51 INFO RoboTubes.py[line:134] ['enter', u'371278', u'4000000147'] 
+2018-10-29 17:55:53 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 372901 
+2018-10-29 17:55:53 INFO RoboTubes.py[line:134] ['enter', u'372901', u'4000000148'] 
+2018-10-29 17:56:02 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 372292 
+2018-10-29 17:56:02 INFO RoboTubes.py[line:134] ['enter', u'372292', u'4000000149'] 
+2018-10-29 17:56:05 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 439667 
+2018-10-29 17:56:05 INFO RoboTubes.py[line:134] ['enter', u'439667', u'4000000150'] 
+2018-10-29 17:56:08 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 432069 
+2018-10-29 17:56:08 INFO RoboTubes.py[line:134] ['enter', u'432069', u'4000000151'] 
+2018-10-29 17:56:10 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 431462 
+2018-10-29 17:56:10 INFO RoboTubes.py[line:134] ['enter', u'431462', u'4000000152'] 
+2018-10-29 17:56:12 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 432836 
+2018-10-29 17:56:12 INFO RoboTubes.py[line:134] ['enter', u'432836', u'4000000153'] 
+2018-10-29 17:56:14 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 432259 
+2018-10-29 17:56:14 INFO RoboTubes.py[line:134] ['enter', u'432259', u'4000000154'] 
+2018-10-29 17:56:16 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 433911 
+2018-10-29 17:56:16 INFO RoboTubes.py[line:134] ['enter', u'433911', u'4000000155'] 
+2018-10-29 17:56:18 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 433284 
+2018-10-29 17:56:18 INFO RoboTubes.py[line:134] ['enter', u'433284', u'4000000156'] 
+2018-10-29 17:56:24 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 435311 
+2018-10-29 17:56:24 INFO RoboTubes.py[line:134] ['enter', u'435311', u'4000000157'] 
+2018-10-29 17:56:44 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 338274 
+2018-10-29 17:57:01 INFO RoboTubes.py[line:134] ['enter', u'338274', u'4000000128'] 
+2018-10-29 17:57:03 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 330758 
+2018-10-29 17:57:03 INFO RoboTubes.py[line:134] ['enter', u'330758', u'4000000129'] 
+2018-10-29 17:57:04 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 396538 
+2018-10-29 17:57:04 INFO RoboTubes.py[line:134] ['enter', u'396538', u'4000000130'] 
+2018-10-29 17:57:06 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 398269 
+2018-10-29 17:57:06 INFO RoboTubes.py[line:134] ['enter', u'398269', u'4000000131'] 
+2018-10-29 17:57:08 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 397663 
+2018-10-29 17:57:08 INFO RoboTubes.py[line:134] ['enter', u'397663', u'4000000132'] 
+2018-10-29 17:57:11 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 390141 
+2018-10-29 17:57:11 INFO RoboTubes.py[line:134] ['enter', u'390141', u'4000000133'] 
+2018-10-29 17:57:15 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 389829 
+2018-10-29 17:57:15 INFO RoboTubes.py[line:134] ['enter', u'389829', u'4000000134'] 
+2018-10-29 17:57:16 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 391505 
+2018-10-29 17:57:16 INFO RoboTubes.py[line:134] ['enter', u'391505', u'4000000135'] 
+2018-10-29 17:57:18 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 390885 
+2018-10-29 17:57:18 INFO RoboTubes.py[line:134] ['enter', u'390885', u'4000000136'] 
+2018-10-29 17:57:20 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 392568 
+2018-10-29 17:57:20 INFO RoboTubes.py[line:134] ['enter', u'392568', u'4000000137'] 
+2018-10-29 17:57:25 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 392834 
+2018-10-29 17:57:25 INFO RoboTubes.py[line:134] ['enter', u'392834', u'4000000138'] 
+2018-10-29 17:57:27 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 392202 
+2018-10-29 17:57:27 INFO RoboTubes.py[line:134] ['enter', u'392202', u'4000000139'] 
+2018-10-29 17:57:29 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 377662 
+2018-10-29 17:57:29 INFO RoboTubes.py[line:134] ['enter', u'377662', u'4000000140'] 
+2018-10-29 17:57:31 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 377019 
+2018-10-29 17:57:31 INFO RoboTubes.py[line:134] ['enter', u'377019', u'4000000141'] 
+2018-10-29 17:57:33 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 378458 
+2018-10-29 17:57:33 INFO RoboTubes.py[line:134] ['enter', u'378458', u'4000000142'] 
+2018-10-29 17:57:36 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 377847 
+2018-10-29 17:57:36 INFO RoboTubes.py[line:134] ['enter', u'377847', u'4000000143'] 
+2018-10-29 17:57:37 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 379569 
+2018-10-29 17:57:37 INFO RoboTubes.py[line:134] ['enter', u'379569', u'4000000144'] 
+2018-10-29 17:57:41 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 378938 
+2018-10-29 17:57:41 INFO RoboTubes.py[line:134] ['enter', u'378938', u'4000000145'] 
+2018-10-29 17:57:44 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 371870 
+2018-10-29 17:57:44 INFO RoboTubes.py[line:134] ['enter', u'371870', u'4000000146'] 
+2018-10-29 17:57:46 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 371278 
+2018-10-29 17:57:46 INFO RoboTubes.py[line:134] ['enter', u'371278', u'4000000147'] 
+2018-10-29 17:57:48 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 372901 
+2018-10-29 17:57:48 INFO RoboTubes.py[line:134] ['enter', u'372901', u'4000000148'] 
+2018-10-29 17:57:51 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 372292 
+2018-10-29 17:57:51 INFO RoboTubes.py[line:134] ['enter', u'372292', u'4000000149'] 
+2018-10-29 17:57:53 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 439667 
+2018-10-29 17:57:53 INFO RoboTubes.py[line:134] ['enter', u'439667', u'4000000150'] 
+2018-10-29 17:57:55 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 432069 
+2018-10-29 17:57:55 INFO RoboTubes.py[line:134] ['enter', u'432069', u'4000000151'] 
+2018-10-29 17:57:57 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 431462 
+2018-10-29 17:57:57 INFO RoboTubes.py[line:134] ['enter', u'431462', u'4000000152'] 
+2018-10-29 17:57:59 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 432836 
+2018-10-29 17:57:59 INFO RoboTubes.py[line:134] ['enter', u'432836', u'4000000153'] 
+2018-10-29 17:58:01 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 432259 
+2018-10-29 17:58:01 INFO RoboTubes.py[line:134] ['enter', u'432259', u'4000000154'] 
+2018-10-29 17:58:02 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 433911 
+2018-10-29 17:58:02 INFO RoboTubes.py[line:134] ['enter', u'433911', u'4000000155'] 
+2018-10-29 17:58:04 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 433284 
+2018-10-29 17:58:04 INFO RoboTubes.py[line:134] ['enter', u'433284', u'4000000156'] 
+2018-10-29 17:58:06 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 435311 
+2018-10-29 17:58:06 INFO RoboTubes.py[line:134] ['enter', u'435311', u'4000000157'] 
+2018-10-29 17:58:08 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 434676 
+2018-10-29 17:58:08 INFO RoboTubes.py[line:134] ['enter', u'434676', u'4000000158'] 
+2018-10-29 17:58:10 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 427242 
+2018-10-29 17:58:10 INFO RoboTubes.py[line:134] ['enter', u'427242', u'4000000159'] 
+2018-10-29 17:58:13 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 420528 
+2018-10-29 17:58:13 INFO RoboTubes.py[line:134] ['enter', u'420528', u'4000000160'] 
+2018-10-29 17:58:14 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 419917 
+2018-10-29 17:58:14 INFO RoboTubes.py[line:134] ['enter', u'419917', u'4000000161'] 
+2018-10-29 17:58:16 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 421635 
+2018-10-29 17:58:16 INFO RoboTubes.py[line:134] ['enter', u'421635', u'4000000162'] 
+2018-10-29 17:58:18 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 421038 
+2018-10-29 17:58:18 INFO RoboTubes.py[line:134] ['enter', u'421038', u'4000000163'] 
+2018-10-29 17:58:20 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 413427 
+2018-10-29 17:58:20 INFO RoboTubes.py[line:134] ['enter', u'413427', u'4000000164'] 
+2018-10-29 17:58:22 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 412508 
+2018-10-29 17:58:22 INFO RoboTubes.py[line:134] ['enter', u'412508', u'4000000165'] 
+2018-10-29 17:58:24 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 414236 
+2018-10-29 17:58:24 INFO RoboTubes.py[line:134] ['enter', u'414236', u'4000000166'] 
+2018-10-29 17:58:26 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 413618 
+2018-10-29 17:58:26 INFO RoboTubes.py[line:134] ['enter', u'413618', u'4000000167'] 
+2018-10-29 17:58:29 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 415283 
+2018-10-29 17:58:29 INFO RoboTubes.py[line:134] ['enter', u'415283', u'4000000168'] 
+2018-10-29 17:58:29 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1178708 
+2018-10-29 17:58:29 INFO RoboTubes.py[line:134] ['enter', u'1178708', u'4000000004'] 
+2018-10-29 17:58:32 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1181820 
+2018-10-29 17:58:32 INFO RoboTubes.py[line:134] ['enter', u'1181820', u'4000000005'] 
+2018-10-29 17:58:33 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1182414 
+2018-10-29 17:58:33 INFO RoboTubes.py[line:134] ['enter', u'1182414', u'4000000006'] 
+2018-10-29 17:58:34 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1180698 
+2018-10-29 17:58:35 INFO RoboTubes.py[line:134] ['enter', u'1180698', u'4000000007'] 
+2018-10-29 17:58:35 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1181278 
+2018-10-29 17:58:35 INFO RoboTubes.py[line:134] ['enter', u'1181278', u'4000000008'] 
+2018-10-29 17:58:36 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1174765 
+2018-10-29 17:58:36 INFO RoboTubes.py[line:134] ['enter', u'1174765', u'4000000009'] 
+2018-10-29 17:58:37 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1167997 
+2018-10-29 17:58:37 INFO RoboTubes.py[line:134] ['enter', u'1167997', u'4000000010'] 
+2018-10-29 17:58:38 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1166932 
+2018-10-29 17:58:38 INFO RoboTubes.py[line:134] ['enter', u'1166932', u'4000000012'] 
+2018-10-29 17:58:39 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1168527 
+2018-10-29 17:58:39 INFO RoboTubes.py[line:134] ['enter', u'1168527', u'4000000011'] 
+2018-10-29 17:58:39 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 1167474 
+2018-10-29 17:58:39 INFO RoboTubes.py[line:134] ['enter', u'1167474', u'4000000013'] 
+2018-10-29 17:58:40 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 15253 
+2018-10-29 17:58:40 INFO RoboTubes.py[line:134] ['enter', u'15253', u'4000000014'] 
+2018-10-29 17:58:41 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 15873 
+2018-10-29 17:58:41 INFO RoboTubes.py[line:134] ['enter', u'15873', u'4000000015'] 
+2018-10-29 17:58:45 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 14140 
+2018-10-29 17:58:45 INFO RoboTubes.py[line:134] ['enter', u'14140', u'4000000016'] 
+2018-10-29 17:58:45 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 14790 
+2018-10-29 17:58:46 INFO RoboTubes.py[line:134] ['enter', u'14790', u'4000000017'] 
+2018-10-29 17:58:47 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 17778 
+2018-10-29 17:58:47 INFO RoboTubes.py[line:134] ['enter', u'17778', u'4000000018'] 
+2018-10-29 17:58:48 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 18388 
+2018-10-29 17:58:48 INFO RoboTubes.py[line:134] ['enter', u'18388', u'4000000019'] 
+2018-10-29 17:58:49 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 2156 
+2018-10-29 17:58:49 INFO RoboTubes.py[line:134] ['enter', u'2156', u'4000000020'] 
+2018-10-29 17:58:50 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 360 
+2018-10-29 17:58:50 INFO RoboTubes.py[line:134] ['enter', u'360', u'4000000021'] 
+2018-10-29 17:58:50 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 970 
+2018-10-29 17:58:50 INFO RoboTubes.py[line:134] ['enter', u'970', u'4000000022'] 
+2018-10-29 17:58:51 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 3872 
+2018-10-29 17:58:51 INFO RoboTubes.py[line:134] ['enter', u'3872', u'4000000023'] 
+2018-10-29 17:58:53 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 4476 
+2018-10-29 17:58:53 INFO RoboTubes.py[line:134] ['enter', u'4476', u'4000000024'] 
+2018-10-29 17:58:56 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 2828 
+2018-10-29 17:58:56 INFO RoboTubes.py[line:134] ['enter', u'2828', u'4000000025'] 
+2018-10-29 17:58:57 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 2879 
+2018-10-29 17:58:57 INFO RoboTubes.py[line:134] ['enter', u'2879', u'4000000026'] 
+2018-10-29 17:58:58 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 33834 
+2018-10-29 17:58:58 INFO RoboTubes.py[line:134] ['enter', u'33834', u'4000000027'] 
+2018-10-29 17:58:59 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 34459 
+2018-10-29 17:58:59 INFO RoboTubes.py[line:134] ['enter', u'34459', u'4000000028'] 
+2018-10-29 17:59:00 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 32701 
+2018-10-29 17:59:00 INFO RoboTubes.py[line:134] ['enter', u'32701', u'4000000029'] 
+2018-10-29 17:59:02 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 25918 
+2018-10-29 17:59:02 INFO RoboTubes.py[line:134] ['enter', u'25918', u'4000000030'] 
+2018-10-29 18:06:31 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 338274 
+2018-10-29 18:06:47 INFO RoboTubes.py[line:134] ['enter', u'338274', u'4000000128'] 
+2018-10-29 18:06:49 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 330758 
+2018-10-29 18:06:49 INFO RoboTubes.py[line:134] ['enter', u'330758', u'4000000129'] 
+2018-10-29 18:06:51 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 396538 
+2018-10-29 18:06:51 INFO RoboTubes.py[line:134] ['enter', u'396538', u'4000000130'] 
+2018-10-29 18:06:53 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 398269 
+2018-10-29 18:06:53 INFO RoboTubes.py[line:134] ['enter', u'398269', u'4000000131'] 
+2018-10-29 18:06:55 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 397663 
+2018-10-29 18:06:55 INFO RoboTubes.py[line:134] ['enter', u'397663', u'4000000132'] 
+2018-10-29 18:06:57 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 390141 
+2018-10-29 18:06:57 INFO RoboTubes.py[line:134] ['enter', u'390141', u'4000000133'] 
+2018-10-29 18:06:59 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 389829 
+2018-10-29 18:06:59 INFO RoboTubes.py[line:134] ['enter', u'389829', u'4000000134'] 
+2018-10-29 18:07:00 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 391505 
+2018-10-29 18:07:00 INFO RoboTubes.py[line:134] ['enter', u'391505', u'4000000135'] 
+2018-10-29 18:07:03 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 390885 
+2018-10-29 18:07:03 INFO RoboTubes.py[line:134] ['enter', u'390885', u'4000000136'] 
+2018-10-29 18:07:05 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 392568 
+2018-10-29 18:07:05 INFO RoboTubes.py[line:134] ['enter', u'392568', u'4000000137'] 
+2018-10-29 18:07:07 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 392834 
+2018-10-29 18:07:07 INFO RoboTubes.py[line:134] ['enter', u'392834', u'4000000138'] 
+2018-10-29 18:07:08 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 392202 
+2018-10-29 18:07:08 INFO RoboTubes.py[line:134] ['enter', u'392202', u'4000000139'] 
+2018-10-29 18:07:10 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 377662 
+2018-10-29 18:07:10 INFO RoboTubes.py[line:134] ['enter', u'377662', u'4000000140'] 
+2018-10-29 18:07:12 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 377019 
+2018-10-29 18:07:12 INFO RoboTubes.py[line:134] ['enter', u'377019', u'4000000141'] 
+2018-10-29 18:07:14 INFO RoboTubes.py[line:64] insert into t_ext_data_node(id, obj_id, time_t, amo) values (2, 378458 
+2018-10-29 18:07:14 INFO RoboTubes.py[line:134] ['enter', u'378458', u'4000000142'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:01 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/3010803502?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
+2018-11-02 15:14:02 INFO RoboSpider.py[line:139] [u'https://gw.datayes.com/rrp_adventure/web/dataCenter/indic/1010008397?compare=false', 'msg 1'] 
