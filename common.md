@@ -74,6 +74,11 @@
 		+ 车系名称
 			- 销量（辆）
 			- 环比涨幅
++ D POST:http://index.bitauto.com/yicheindexpublic/indextrend
++ {"serial":[{"name":"朗逸","value":"carmodel_2370"},..],"timeType":"day","fromTime":"2018-11-01","toTime":"2018-11-08"}
+	+ toTime， fromTime， id 可变
+	+ 近60天指数分布
++ M POST:http://index.bitauto.com/yicheindexpublic/praisetrend
 
 ## 市场大盘
 ### 汽车行业销量趋势 Month
