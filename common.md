@@ -44,7 +44,12 @@
 **SEED_URL**
 
 	POST: http://index.bitauto.com/yicheindexpublic/rank/car-level
-	{"id":4} 获取车型 code
+	{"id":4} 获取车系 code
+
+	POST:http://index.bitauto.com/ai/v4/searchparam/getCompeteCarsPublic
+	{"subject":"serial","id":"carmodel_2370","searchName":"","from":"search"} 获取车型 code 
+
+	
 
 ## 易车报告
 > http://index.bitauto.com/public/home/special
@@ -74,11 +79,14 @@
 		+ 车系名称
 			- 销量（辆）
 			- 环比涨幅
-+ D POST:http://index.bitauto.com/yicheindexpublic/indextrend
++ D POST:http://index.bitauto.com/yicheindexpublic/indextrend（先POST-lastDate:{"model":"rank-index","date":"2017-12-27","timeType":"day"}）
 + {"serial":[{"name":"朗逸","value":"carmodel_2370"},..],"timeType":"day","fromTime":"2018-11-01","toTime":"2018-11-08"}
-	+ toTime， fromTime， id 可变
+	+ RequestParameters:	toTime， fromTime， name, carmodel
 	+ 近60天指数分布
-+ M POST:http://index.bitauto.com/yicheindexpublic/praisetrend
++ M POST:http://index.bitauto.com/yicheindexpublic/praisetrend (先POST-lastDate：{"model":"rank-koubei","date":"2017-12-27","timeType":"month"})
++ {"serial":[{"name":"朗逸","value":"carmodel_2370"},...],"timeType":"month","fromTime":"2018-04-15","toTime":"2018-10-15"}
+	+ RequestParameters:	toTime， fromTime， name, carmodel
+	+ 
 
 ## 市场大盘
 ### 汽车行业销量趋势 Month

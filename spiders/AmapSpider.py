@@ -66,6 +66,10 @@ class Amap(iimediaBase):
         for code, name in self.getCityCode():
             response = self.startRequest(url=root_url.format(linksType, code))
             jobj = json.loads(response.content.decode("utf8"))
+            print(jobj)
+            for i in jobj:
+                print(i)
+            return -1
 
 
 
@@ -74,3 +78,4 @@ class Amap(iimediaBase):
 if __name__ == '__main__':
     p = Amap()
     p.parseCityCode()
+    p.parseDistrictRank(1)
