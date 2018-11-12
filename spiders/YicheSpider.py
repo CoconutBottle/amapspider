@@ -12,12 +12,15 @@ from middles.middleAssist import redisAsisst
 from middles.middleAssist import logAsisst
 from middles.middleAssist import ssdbAssist
 from middles.middleAssist import mysqlAssist
+from middles.middleWare import EasyMethod
+
+from items.YicheItem import YicheItem
 
 from jsonpath import jsonpath
 import json
 import requests
 
-# logger = logAsisst.imLog(sys.argv[1])()
+# logger = logAsisst.imLog("YicheCrawl")()
 headers = {"Content-Type": "application/json;charset=UTF-8"}
 
 class Yiche(iimediaBase):
@@ -29,28 +32,64 @@ class Yiche(iimediaBase):
             "http://index.bitauto.com/yicheindexpublic/data/last-date",
             "http://index.bitauto.com/ai/v4/searchparam/getCompeteCarsPublic"
         )
-
-        self.start_urls = (
-            "http://index.bitauto.com/yicheindexpublic/rank/list",
-            "http://index.bitauto.com/yicheindexpublic/sale/saleTrend",
-            "http://index.bitauto.com/yicheindexpublic/sale/saleLevelBar",
-            "http://index.bitauto.com/yicheindexpublic/sale/saleCountryByMonthLine",
+        self.allow_domains = ["http://index.bitauto.com/yicheindexpublic"]
+        self.obj_urls = (
+            "/sale/saleTrend",
+            "/sale/saleCountryByMonthLine",
+            "/sale/saleDynamicBar",
+            "/sale/saleMakeBar",
+            "/sale/saleLevelBubule",
+            "/sale/saleCountryPie",
         )
 
-        self._seed_date = Yiche.lastDate(url=self.seed_urls[1])
+
         self._seed_key = "tmp:yiche:CarModel"
         self._Rconn = redisAsisst.imredis().connection()
         self._SDBconn = ssdbAssist.SSDBsession().connect()
 
     @staticmethod
-    def lastDate(url):
-        global headers
-        parameters = {"model":"market","date":"2017-12-27","timeType":"month"}
-        response = requests.post(url=url, data = json.dumps(parameters),
-                                 headers=headers)
-        response = json.loads(response.content)
+    def lastDate(model, url):
+        parameters = {"model":model,
+                      "date":"2017-12-27","timeType":"month"}
+        if model == 'rank-index':
+            parameters["timeType"] = "day"
+        response = Yiche.startRequest(url=url, data=parameters)
         last_date= jsonpath(response, "$..lastDate")[0]
         return last_date
+
+    @staticmethod
+    def startRequest(url,  **kwargs):
+        global headers
+        response = requests.post(url=url, data = json.dumps(kwargs["data"]),
+                                 headers=headers)
+        try:
+            response = json.loads(response.content)
+            return response
+        except Exception as e:
+            logger.error(e)
+            return 0
+
+
+    def parseMarketData(self, url_suffix, freq=1):
+        """
+
+        :param url_suffix:URL后缀
+        :param freq: 更新频率 4/5 month/season
+        :return:
+        """
+        this = self.allow_domains[0]+url_suffix
+        param= {"timeType":"month",
+                "fromTime":"2017-10-15",
+                "toTime":Yiche.lastDate(model="market", url=self.seed_urls[1])}
+        response = Yiche.startRequest(url=this, data=param)
+        obj_name = jsonpath(response, "$..yAxis.name")[0]
+        timeT    = jsonpath(response, "$..xAxis[*].data")[0]
+        timeT    = map(EasyMethod.fuckMonthEnd,timeT)
+        obj_data = jsonpath(response, "$..series[*].data")[0]
+
+        data     = dict(map(None, timeT, obj_data))
+        print(data)
+
 
     def parseCarModel(self):
         global headers
@@ -100,4 +139,4 @@ class Yiche(iimediaBase):
 if __name__ == '__main__':
     p = Yiche()
 
-    p.parseCarSerial()
+    p.parseMarketData(url_suffix=p.obj_urls[0])
