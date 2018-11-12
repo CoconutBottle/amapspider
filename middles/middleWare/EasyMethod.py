@@ -12,16 +12,22 @@ def fuckAntiNum(strDate):
     return re.sub("[^0-9]", "", strDate)
 
 
-def fuckMonthEnd(md, d=0):
+def fuckMonthEnd(md="", d=0, **kwargs):
     import  calendar
-    if re.search("-", md):
-        year, month = md.split("-")
-        year, month = int(year), int(month)
+    try:
+        if md =="":raise ValueError
+    except:
+        year, month = int(kwargs["year"]), int(kwargs["month"])
+        fday, eday = calendar.monthrange(year, month)
     else:
-        year = int(md)//100
-        month= int(md)%100
+        if re.search("-", md):
+            year, month = md.split("-")
+            year, month = int(year), int(month)
+        else:
+            year = int(md)//100
+            month= int(md)%100
 
-    fday, eday = calendar.monthrange(year, month)
+        fday, eday = calendar.monthrange(year, month)
 
 
     if d == -1:return eday
