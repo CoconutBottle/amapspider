@@ -13,6 +13,7 @@ from middles.middleAssist import logAsisst
 from middles.middleAssist import ssdbAssist
 from middles.middleAssist import mysqlAssist
 from middles.middleWare import EasyMethod
+from middles.middlePool import ipProxy, userAgent
 
 from items.YicheItem import YicheItem
 
@@ -43,27 +44,37 @@ class Yiche(iimediaBase):
             "/sale/saleMakeBar",
             "/sale/saleLevelBubule",
             "/sale/saleCountryPie",
+
+            "/indextrend",
+            "/rank/list",
         )
 
 
         self._seed_key = "tmp:yiche:CarModel"
         self._Rconn = redisAsisst.imredis().connection()
         self._SDBconn = ssdbAssist.SSDBsession().connect()
+        self._Mconn = mysqlAssist.immysql()
 
     @staticmethod
-    def lastDate(model, url):
+    def lastDate(model,url=None):
+        if url is None:
+            rurl = "http://index.bitauto.com/yicheindexpublic/data/last-date"
+        else:
+            rurl = url
         parameters = {"model":model,
                       "date":"2017-12-27","timeType":"month"}
         if model == 'rank-index':
             parameters["timeType"] = "day"
-        response = Yiche.startRequest(url=url, data=parameters)
+        response = Yiche.startRequest(url=rurl, data=parameters)
         last_date= jsonpath(response, "$..lastDate")[0]
         return last_date
 
     @staticmethod
     def startRequest(url,  **kwargs):
         global headers
+        head = dict(headers, **{"User-Agent":userAgent.user_agent})
         response = requests.post(url=url, data = json.dumps(kwargs["data"]),
+
                                  headers=headers)
         try:
             response = json.loads(response.content)
@@ -149,6 +160,67 @@ class Yiche(iimediaBase):
             yield {"objname":objname, "data":data}
             print("delete %s"%k)
             self._Rconn.delete(k)
+            
+            
+    def SeedSaveSQL(self):
+        param0 = {"id":4}
+        param2 = {"subject":"serial","id":"carmodel_5426","searchName":"","from":"search"}
+        response0 = Yiche.startRequest(url = self.seed_urls[0], data=param0)
+        obj0 = jsonpath(response0, "$..data[*].value")[0]
+        print(obj0)
+        carlevels = jsonpath(response0, "$..data[*].children")[0]
+        for car in carlevels:
+            self._SDBconn.hset("yiche:carlevel:series",car['value'], car['name'])
+            # self._Mconn.insert(tbName="t_ext_seed_data",
+            #                    seed = car['value'],
+            #                    seed_val = car['name'],platform="Yiche",
+            #                    note = obj0, level = 1)
+            self._Mconn.insert(tbName="t_ext_plat_menu",
+                               plat_id = 5,
+                               name="易车指数:排行榜:%s"%car['name'],
+                               channel_code = "yiche_crawl",
+                               code = car['value'],
+                               p_code = "yiche_crawl",
+                               ext = str(car))
+
+        response2 = Yiche.startRequest(url=self.seed_urls[2], data=param2)
+        node2     = jsonpath(response2, "$..data")[0]
+        for node in node2:
+            carlevels = node['children']
+            pseed     = node['value']
+            pname     = node['name']
+            print(pname, pseed)
+            # self._Mconn.insert(tbName="t_ext_seed_data",
+            #                    seed  = pseed,
+            #                    seed_val = pname, platform='Yiche',
+            #                    level=-1)
+            for car in carlevels:
+                value, name = car['value'], car['displayName']
+                self._SDBconn.hset("yiche:carlevel:model",value, name)
+                del car['isChecked'], car['saleStatus']
+                # self._Mconn.insert(tbName="t_ext_seed_data",
+                #                    seed  = value,
+                #                    seed_val = name, platform='Yiche',
+                #                    pseed = pseed, level = 0,
+                #                    note = str(car))
+                self._Mconn.insert(tbName="t_ext_plat_menu",
+                                   plat_id = 5,
+                                   name="易车指数:排行榜:%s"%name,
+                                   channel_code = pseed,
+                                   code = value,
+                                   p_code = pseed,
+                                   ext = str(car))
+
+
+    def parseSalesRank(self, code=None, name=None, **kwargs):
+
+        lastdate = self.lastDate(model=kwargs['type'])
+        print(lastdate)
+        param6 = {"serial":[{"name":name,"value":code}],
+                  "timeType":"day","fromTime":"2017-01-01","toTime":lastdate}
+        url = self.obj_urls[]
+
+
 
 if __name__ == '__main__':
     p = Yiche()
@@ -157,6 +229,7 @@ if __name__ == '__main__':
     #     print(i["objname"])
     #     print(i["data"])
     # p.parseMarketSeason(url_suffix=p.obj_urls[-1], mod=2, type=1)
-    for i in p.parseMarketSeason(url_suffix=p.obj_urls[-1], mod=2, type=1):
-        print(i['objname'])
-        print(i)
+    # for i in p.parseMarketSeason(url_suffix=p.obj_urls[-1], mod=2, type=1):
+    #     print(i['objname'])
+    #     print(i)
+    p.parseSalesRank(type='rank-koubei')
