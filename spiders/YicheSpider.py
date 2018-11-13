@@ -46,6 +46,7 @@ class Yiche(iimediaBase):
             "/sale/saleCountryPie",
 
             "/indextrend",
+            "/praisetrend",
             "/rank/list",
         )
 
@@ -213,14 +214,21 @@ class Yiche(iimediaBase):
 
 
     def parseSalesRank(self, code=None, name=None, **kwargs):
+        for i in range(2):
+            model = "rank-koubei" if i else "rank-index"
+            lastdate = self.lastDate(model=model)
+            param7 = {"serial":[{"name":name,"value":code}],
+                      "timeType":"month" if i else "day",
+                      "fromTime":"2017-01-01",
+                      "toTime":lastdate}
 
-        lastdate = self.lastDate(model=kwargs['type'])
-        print(lastdate)
-        param6 = {"serial":[{"name":name,"value":code}],
-                  "timeType":"day","fromTime":"2017-01-01","toTime":lastdate}
-        url = self.obj_urls[]
+            url = self.allow_domains[0]  + self.obj_urls[7+i]
+            response = Yiche.startRequest(url=url, data= param7)
 
-
+            objtime  = jsonpath(response, "$..xAxis[*].data")[0]
+            objtime  = map(EasyMethod.fuckMonthEnd, objtime) if i else objtime
+            objdata  = jsonpath(response, "$..series[*].data")[0]
+            yield {"objname":"%s:%s"%(name,model), "data":dict(zip(objtime, objdata))}
 
 if __name__ == '__main__':
     p = Yiche()
@@ -232,4 +240,6 @@ if __name__ == '__main__':
     # for i in p.parseMarketSeason(url_suffix=p.obj_urls[-1], mod=2, type=1):
     #     print(i['objname'])
     #     print(i)
-    p.parseSalesRank(type='rank-koubei')
+    tt = p.parseSalesRank(type='rank-koubei',code='carmodel_2855',name='xxx')
+    for i in tt:
+        print(i)
