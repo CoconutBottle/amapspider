@@ -74,6 +74,7 @@ class Yiche(iimediaBase):
     @staticmethod
     def startRequest(url,  **kwargs):
         global headers
+        print(url, kwargs['data'])
         head = dict(headers, **{"User-Agent":userAgent.user_agent})
         response = requests.post(url=url, data = json.dumps(kwargs["data"]),
 
@@ -86,22 +87,23 @@ class Yiche(iimediaBase):
             return 0
 
 
-    def parseMarketMonth(self, url_suffix, mod=1):
+    def parseMarketMonth(self, url_suffix, mod=1, **kwargs):
         """
 
         :param url_suffix:
         :param mod: 0,1
         :return:
         """
-        if mod !=1 and mod !=0 and mod !=2:
-            raise ValueError("mod取值只可以是1或0或2")
 
+        if re.match(".+Trend",url_suffix):unit = "辆"
+        else:unit = "%"
+        freq = 4
         this = self.allow_domains[0]+url_suffix
 
-        param= {"timeType":"month",
+        param1= {"timeType":"month",
                 "fromTime":"2017-10-15",
-                "toTime":Yiche.lastDate(model="market", url=self.seed_urls[mod])}
-        response = Yiche.startRequest(url=this, data=param)
+                "toTime":Yiche.lastDate(model="market", url=self.seed_urls[1])}
+        response = Yiche.startRequest(url=this, data=param1)
         name = jsonpath(response, "$..yAxis.name")[0]
         timeT    = jsonpath(response, "$..xAxis[*].data")[0]
         timeT    = map(EasyMethod.fuckMonthEnd,timeT)
@@ -109,16 +111,19 @@ class Yiche(iimediaBase):
         obj_name = jsonpath(response, "$..series[*].name")
         for objd, objn in zip(obj_data, obj_name):
             data = dict(map(None, timeT, objd))
-            yield {"objname":"易车指数:市场大盘:%s:%s"%(name,objn), "data":data}
+            yield {"objname":"易车指数:市场大盘:%s:%s"%(name,objn),
+                   "data":data,
+                   "unit":unit,
+                   "freq":freq}, param1
 
 
 
-    def parseMarketSeason(self, url_suffix, mod=1, **kwargs ):
-        if mod < 0 or mod > 3 or not isinstance(mod, int) :
+    def parseMarketSeason(self, url_suffix, mod=2, **kwargs ):
+        if mod < 0 or mod > 4 or not isinstance(mod, int) :
             raise ValueError("mod取值只可以是0到4的整数值")
-        if mod < 2:step = 3
-        elif mod == 2:step = 1
-        else:step = 6
+        if mod < 2:step,freq = 3, 5
+        elif mod == 2:step,freq = 1, 4
+        else:step,freq = 6, 5
 
 
         this = self.allow_domains[0]+url_suffix
@@ -134,6 +139,7 @@ class Yiche(iimediaBase):
                     param['fromTime'] = "%d-%02d-01" %(year, month)
                     param['toTime'] = EasyMethod.fuckMonthEnd(year=year, month=month+step)
                     response = Yiche.startRequest(url=this, data=param)
+                    # type 表示 类型
                     if kwargs["type"] == 1:
                         objname = jsonpath(response, "$..series[*].data[*].name")
                         objdata = jsonpath(response, "$..series[*].data[*].symbolSize")
@@ -152,14 +158,15 @@ class Yiche(iimediaBase):
                                                 if b else 1,
                         objname, objdata)
 
-                    self._Rconn.expire(tmp, 300)
+
 
                 except Exception as e:print(e)
 
         for k in self._Rconn.keys("tmpyiche:%s*"%suffix):
             data = self._Rconn.hgetall(k)
             objname = objprefix % k.split(":")[-1]
-            yield {"objname":objname, "data":data}
+            yield {"objname":objname, "data":data,
+                   "unit":"%", "freq":freq}, -1
             print("delete %s"%k)
             self._Rconn.delete(k)
             
@@ -222,26 +229,33 @@ class Yiche(iimediaBase):
                       "timeType":"month" if i else "day",
                       "fromTime":"2017-01-01",
                       "toTime":lastdate}
-
+            tt = name.split(":")
+            nam = ":".join(tt[:-1] + [model]+tt[-1:])
             url = self.allow_domains[0]  + self.obj_urls[7+i]
             response = Yiche.startRequest(url=url, data= param7)
 
             objtime  = jsonpath(response, "$..xAxis[*].data")[0]
             objtime  = map(EasyMethod.fuckMonthEnd, objtime) if i else objtime
             objdata  = jsonpath(response, "$..series[*].data")[0]
-            yield {"objname":"%s:%s"%(name,model), "data":dict(zip(objtime, objdata))}
+            yield {"objname":nam, "data":dict(zip(objtime, objdata)),
+                   "unit":"", "freq":4}, param7
 
     def parseSales(self, code, name, **kwargs):
-        param9 = {"id":6, "value":code}
+        if kwargs['pid'] > 6 :yield 0
+        param9 = {"id":kwargs["pid"], "value":code}
+
         url    = self.allow_domains[0] + self.obj_urls[9]
         response = Yiche.startRequest(url, data = param9)
-        objtime  = jsonpath(response, "$..thead[*].name")[0]
-
+        objdetail= jsonpath(response, "$..thead[*].name")[0]
+        objtime  = objdetail[0]
+        objname  = objdetail[2]
         objtime  = EasyMethod.fuckMonthEnd(re.sub("[^0-9]","",objtime))
         objdata  = jsonpath(response, "$..tbody")[0]
         for obj in objdata:
-            yield {"objname":"%s:%s"%(name, obj['name']),
-                   "data":{objtime:obj['index']}}
+            yield {"objname":"%s:%s:%s"%(name, objname, obj['name']),
+                   "data":{objtime:obj['index']},
+                   "unit":"辆","freq":4}, param9
+        self.parseSales(code=code, name=name, pid=kwargs['pid']+1)
 
 if __name__ == '__main__':
     p = Yiche()

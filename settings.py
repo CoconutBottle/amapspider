@@ -8,7 +8,7 @@ RedisHost = {
     "host": "10.1.0.253" if IsDebug else "10.0.0.7",
     "port": 6400 if IsDebug else 7777,
     "passwd": "",
-    "db": 1 if IsDebug else 2
+    "db": 2 if IsDebug else 2
 }
 ##MysqlHOST PASSWORD AND PORT
 MysqlHost = {

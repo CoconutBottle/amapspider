@@ -71,8 +71,9 @@ class immysql(object):
             dataTuple = tuple(kwargs.values())
             dbField = str(tuple(dbField)).replace("'", '')
             cursor = self.get_cursor()
-            sql = """ replace into %s %s values %s """ % (tbName, dbField, data_values)
+            sql = """replace into %s %s values %s """ % (tbName, dbField, data_values)
             params = dataTuple
+            print(sql)
             cursor.execute(sql, params)
             cursor.close()
             return 1
