@@ -20,6 +20,7 @@ from items.YicheItem import YicheItem
 from jsonpath import jsonpath
 import json
 import requests
+import re
 
 # logger = logAsisst.imLog("YicheCrawl")()
 headers = {"Content-Type": "application/json;charset=UTF-8"}
@@ -213,10 +214,10 @@ class Yiche(iimediaBase):
                                    ext = str(car))
 
 
-    def parseSalesRank(self, code=None, name=None, **kwargs):
+    def parseRank(self, code=None, name=None, **kwargs):
         for i in range(2):
-            model = "rank-koubei" if i else "rank-index"
-            lastdate = self.lastDate(model=model)
+            model = "口碑" if i else "指数"
+            lastdate = self.lastDate(model="rank-koubei" if i else "rank-index")
             param7 = {"serial":[{"name":name,"value":code}],
                       "timeType":"month" if i else "day",
                       "fromTime":"2017-01-01",
@@ -230,6 +231,18 @@ class Yiche(iimediaBase):
             objdata  = jsonpath(response, "$..series[*].data")[0]
             yield {"objname":"%s:%s"%(name,model), "data":dict(zip(objtime, objdata))}
 
+    def parseSales(self, code, name, **kwargs):
+        param9 = {"id":6, "value":code}
+        url    = self.allow_domains[0] + self.obj_urls[9]
+        response = Yiche.startRequest(url, data = param9)
+        objtime  = jsonpath(response, "$..thead[*].name")[0]
+
+        objtime  = EasyMethod.fuckMonthEnd(re.sub("[^0-9]","",objtime))
+        objdata  = jsonpath(response, "$..tbody")[0]
+        for obj in objdata:
+            yield {"objname":"%s:%s"%(name, obj['name']),
+                   "data":{objtime:obj['index']}}
+
 if __name__ == '__main__':
     p = Yiche()
 
@@ -240,6 +253,6 @@ if __name__ == '__main__':
     # for i in p.parseMarketSeason(url_suffix=p.obj_urls[-1], mod=2, type=1):
     #     print(i['objname'])
     #     print(i)
-    tt = p.parseSalesRank(type='rank-koubei',code='carmodel_2855',name='xxx')
-    for i in tt:
+    t = p.parseSales(type='rank-koubei',code='brand',name='xxx')
+    for i in t:
         print(i)
