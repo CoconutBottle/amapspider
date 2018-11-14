@@ -11,6 +11,34 @@ import re
 def fuckAntiNum(strDate):
     return re.sub("[^0-9]", "", strDate)
 
+
+def fuckMonthEnd(md="", d=0, **kwargs):
+    import  calendar
+    try:
+        if md =="":raise ValueError
+    except:
+        year, month = int(kwargs["year"]), int(kwargs["month"])
+        fday, eday = calendar.monthrange(year, month)
+    else:
+        if re.search("-", md):
+            year, month = md.split("-")
+            year, month = int(year), int(month)
+        else:
+            year = int(md)//100
+            month= int(md)%100
+
+        fday, eday = calendar.monthrange(year, month)
+
+
+    if d == -1:return eday
+    elif d == 0:return "%d-%02d-%02d"%(year, month, eday)
+    elif d == 1:return fday
+    else: return -1
+
+
+
+
+
 def frequency2id(frq):
     frq = frq.decode("utf8", "ignore")
     if re.search("日|天|day".decode("utf8", "ignore"), frq):
@@ -122,4 +150,4 @@ def insert(tbName, **kwargs):
         return 0
 
 if __name__ == '__main__':
-    print(insert(tbName="xx",xx=2,dd=34))
+    print map(fuckMonthEnd,["201812","201706"])

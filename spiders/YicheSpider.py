@@ -12,12 +12,16 @@ from middles.middleAssist import redisAsisst
 from middles.middleAssist import logAsisst
 from middles.middleAssist import ssdbAssist
 from middles.middleAssist import mysqlAssist
+from middles.middleWare import EasyMethod
+from middles.middlePool import ipProxy, userAgent
+
+from items.YicheItem import YicheItem
 
 from jsonpath import jsonpath
 import json
 import requests
 
-# logger = logAsisst.imLog(sys.argv[1])()
+# logger = logAsisst.imLog("YicheCrawl")()
 headers = {"Content-Type": "application/json;charset=UTF-8"}
 
 class Yiche(iimediaBase):
@@ -29,75 +33,213 @@ class Yiche(iimediaBase):
             "http://index.bitauto.com/yicheindexpublic/data/last-date",
             "http://index.bitauto.com/ai/v4/searchparam/getCompeteCarsPublic"
         )
+        self.allow_domains = ["http://index.bitauto.com/yicheindexpublic"]
+        self.obj_urls = (
+            "/sale/saleTrend",
+            "/sale/saleCountryByMonthLine",
+            "/sale/saleLevelBar",
 
-        self.start_urls = (
-            "http://index.bitauto.com/yicheindexpublic/rank/list",
-            "http://index.bitauto.com/yicheindexpublic/sale/saleTrend",
-            "http://index.bitauto.com/yicheindexpublic/sale/saleLevelBar",
-            "http://index.bitauto.com/yicheindexpublic/sale/saleCountryByMonthLine",
+
+            "/sale/saleDynamicBar",
+            "/sale/saleMakeBar",
+            "/sale/saleLevelBubule",
+            "/sale/saleCountryPie",
+
+            "/indextrend",
+            "/praisetrend",
+            "/rank/list",
         )
 
-        self._seed_date = Yiche.lastDate(url=self.seed_urls[1])
+
         self._seed_key = "tmp:yiche:CarModel"
         self._Rconn = redisAsisst.imredis().connection()
         self._SDBconn = ssdbAssist.SSDBsession().connect()
+        self._Mconn = mysqlAssist.immysql()
 
     @staticmethod
-    def lastDate(url):
-        global headers
-        parameters = {"model":"market","date":"2017-12-27","timeType":"month"}
-        response = requests.post(url=url, data = json.dumps(parameters),
-                                 headers=headers)
-        response = json.loads(response.content)
+    def lastDate(model,url=None):
+        if url is None:
+            rurl = "http://index.bitauto.com/yicheindexpublic/data/last-date"
+        else:
+            rurl = url
+        parameters = {"model":model,
+                      "date":"2017-12-27","timeType":"month"}
+        if model == 'rank-index':
+            parameters["timeType"] = "day"
+        response = Yiche.startRequest(url=rurl, data=parameters)
         last_date= jsonpath(response, "$..lastDate")[0]
         return last_date
 
-    def parseCarModel(self):
+    @staticmethod
+    def startRequest(url,  **kwargs):
         global headers
-        parameters = {"id":4}
-        response = requests.post(url=self.seed_urls[0], data=json.dumps(parameters),
+        head = dict(headers, **{"User-Agent":userAgent.user_agent})
+        response = requests.post(url=url, data = json.dumps(kwargs["data"]),
+
                                  headers=headers)
-        response = json.loads(response.content)
-        children = jsonpath(response, "$..children")[0]
-        for i in children:
-            self._Rconn.sadd(self._seed_key, i['value'])
-            self._SDBconn.hset('yiche:car:name', i['value'], i['name'])
-        self._Rconn.expire(self._seed_key, 300)
+        try:
+            response = json.loads(response.content)
+            return response
+        except Exception as e:
+            logger.error(e)
+            return 0
 
 
-    def getCarModel(self):
-        for i in self._Rconn.smembers(self._seed_key):
-            yield i, self._SDBconn.hget('yiche:car:name', i)
+    def parseMarketMonth(self, url_suffix, mod=1):
+        """
 
+        :param url_suffix:
+        :param mod: 0,1
+        :return:
+        """
+        if mod !=1 and mod !=0 and mod !=2:
+            raise ValueError("mod取值只可以是1或0或2")
 
-    def parseCarSerial(self):
-        global headers
-        parameters = {"subject":"serial","id":"carmodel_5422","searchName":"","from":"search"}
-        root_url = self.seed_urls[2]
-        response = requests.post(url=root_url, data=json.dumps(parameters),
-                                 headers=headers)
-        print(response.content)
+        this = self.allow_domains[0]+url_suffix
 
-    def parseRank(self, value, name):
-        global headers
-        root_url = self.start_urls[0]
-        for chId in (4, 5, 6):
-            try:
-                parameters = {"id": chId, "value":value}
-                response   = requests.post(url=root_url, data=json.dumps(parameters),
-                                           headers=headers)
-                response = json.loads(response.content)
-            except Exception as e:
-                print(e)
-                return -1
-            else:
-                response = jsonpath(response, "")
+        param= {"timeType":"month",
+                "fromTime":"2017-10-15",
+                "toTime":Yiche.lastDate(model="market", url=self.seed_urls[mod])}
+        response = Yiche.startRequest(url=this, data=param)
+        name = jsonpath(response, "$..yAxis.name")[0]
+        timeT    = jsonpath(response, "$..xAxis[*].data")[0]
+        timeT    = map(EasyMethod.fuckMonthEnd,timeT)
+        obj_data = jsonpath(response, "$..series[*].data")
+        obj_name = jsonpath(response, "$..series[*].name")
+        for objd, objn in zip(obj_data, obj_name):
+            data = dict(map(None, timeT, objd))
+            yield {"objname":"易车指数:市场大盘:%s:%s"%(name,objn), "data":data}
 
 
 
+    def parseMarketSeason(self, url_suffix, mod=1, **kwargs ):
+        if mod < 0 or mod > 3 or not isinstance(mod, int) :
+            raise ValueError("mod取值只可以是0到4的整数值")
+        if mod < 2:step = 3
+        elif mod == 2:step = 1
+        else:step = 6
 
+
+        this = self.allow_domains[0]+url_suffix
+        objprefix = "易车指数:市场大盘:份额趋势(近%d个月均值)"%step + ":%s"
+        suffix = url_suffix.split("/")[-1]
+        param= {"timeType":"month"}
+
+        for year in (2018, 2017):
+            for month in range(0, 13, step):
+                try:
+                    tmp = "tmpyiche:" + suffix +":%s"
+                    if month + step > 12:continue
+                    param['fromTime'] = "%d-%02d-01" %(year, month)
+                    param['toTime'] = EasyMethod.fuckMonthEnd(year=year, month=month+step)
+                    response = Yiche.startRequest(url=this, data=param)
+                    if kwargs["type"] == 1:
+                        objname = jsonpath(response, "$..series[*].data[*].name")
+                        objdata = jsonpath(response, "$..series[*].data[*].symbolSize")
+                        if objdata == False:
+                            objdata = jsonpath(response, "$..series[*].data[*].value")
+
+                    elif kwargs["type"] == 0:
+                        objname  = jsonpath(response, "$..yAxis[*].data")[0]
+                        objdata  = jsonpath(response, "$..series[*].data")[0]
+
+
+                    print(objdata)
+                    map(
+                    lambda a,b:self._Rconn.hset(tmp % a, param['toTime'],
+                                                b.decode("utf8"))
+                                                if b else 1,
+                        objname, objdata)
+
+                    self._Rconn.expire(tmp, 300)
+
+                except Exception as e:print(e)
+
+        for k in self._Rconn.keys("tmpyiche:%s*"%suffix):
+            data = self._Rconn.hgetall(k)
+            objname = objprefix % k.split(":")[-1]
+            yield {"objname":objname, "data":data}
+            print("delete %s"%k)
+            self._Rconn.delete(k)
+            
+            
+    def SeedSaveSQL(self):
+        param0 = {"id":4}
+        param2 = {"subject":"serial","id":"carmodel_5426","searchName":"","from":"search"}
+        response0 = Yiche.startRequest(url = self.seed_urls[0], data=param0)
+        obj0 = jsonpath(response0, "$..data[*].value")[0]
+        print(obj0)
+        carlevels = jsonpath(response0, "$..data[*].children")[0]
+        for car in carlevels:
+            self._SDBconn.hset("yiche:carlevel:series",car['value'], car['name'])
+            # self._Mconn.insert(tbName="t_ext_seed_data",
+            #                    seed = car['value'],
+            #                    seed_val = car['name'],platform="Yiche",
+            #                    note = obj0, level = 1)
+            self._Mconn.insert(tbName="t_ext_plat_menu",
+                               plat_id = 5,
+                               name="易车指数:排行榜:%s"%car['name'],
+                               channel_code = "yiche_crawl",
+                               code = car['value'],
+                               p_code = "yiche_crawl",
+                               ext = str(car))
+
+        response2 = Yiche.startRequest(url=self.seed_urls[2], data=param2)
+        node2     = jsonpath(response2, "$..data")[0]
+        for node in node2:
+            carlevels = node['children']
+            pseed     = node['value']
+            pname     = node['name']
+            print(pname, pseed)
+            # self._Mconn.insert(tbName="t_ext_seed_data",
+            #                    seed  = pseed,
+            #                    seed_val = pname, platform='Yiche',
+            #                    level=-1)
+            for car in carlevels:
+                value, name = car['value'], car['displayName']
+                self._SDBconn.hset("yiche:carlevel:model",value, name)
+                del car['isChecked'], car['saleStatus']
+                # self._Mconn.insert(tbName="t_ext_seed_data",
+                #                    seed  = value,
+                #                    seed_val = name, platform='Yiche',
+                #                    pseed = pseed, level = 0,
+                #                    note = str(car))
+                self._Mconn.insert(tbName="t_ext_plat_menu",
+                                   plat_id = 5,
+                                   name="易车指数:排行榜:%s"%name,
+                                   channel_code = pseed,
+                                   code = value,
+                                   p_code = pseed,
+                                   ext = str(car))
+
+
+    def parseSalesRank(self, code=None, name=None, **kwargs):
+        for i in range(2):
+            model = "rank-koubei" if i else "rank-index"
+            lastdate = self.lastDate(model=model)
+            param7 = {"serial":[{"name":name,"value":code}],
+                      "timeType":"month" if i else "day",
+                      "fromTime":"2017-01-01",
+                      "toTime":lastdate}
+
+            url = self.allow_domains[0]  + self.obj_urls[7+i]
+            response = Yiche.startRequest(url=url, data= param7)
+
+            objtime  = jsonpath(response, "$..xAxis[*].data")[0]
+            objtime  = map(EasyMethod.fuckMonthEnd, objtime) if i else objtime
+            objdata  = jsonpath(response, "$..series[*].data")[0]
+            yield {"objname":"%s:%s"%(name,model), "data":dict(zip(objtime, objdata))}
 
 if __name__ == '__main__':
     p = Yiche()
 
-    p.parseCarSerial()
+    # for i in p.parseMarketMonth(url_suffix=p.obj_urls[2], mod=1):
+    #     print(i["objname"])
+    #     print(i["data"])
+    # p.parseMarketSeason(url_suffix=p.obj_urls[-1], mod=2, type=1)
+    # for i in p.parseMarketSeason(url_suffix=p.obj_urls[-1], mod=2, type=1):
+    #     print(i['objname'])
+    #     print(i)
+    tt = p.parseSalesRank(type='rank-koubei',code='carmodel_2855',name='xxx')
+    for i in tt:
+        print(i)
