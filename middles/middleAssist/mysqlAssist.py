@@ -60,6 +60,25 @@ class immysql(object):
             cursor.close()
         return result
 
+    def insert(self, tbName, **kwargs):
+
+        try:
+
+            data_values = "(" + "%s," * (len(kwargs)) + ")"
+            data_values = data_values.replace(',)', ')')
+
+            dbField = kwargs.keys()
+            dataTuple = tuple(kwargs.values())
+            dbField = str(tuple(dbField)).replace("'", '')
+            cursor = self.get_cursor()
+            sql = """ replace into %s %s values %s """ % (tbName, dbField, data_values)
+            params = dataTuple
+            cursor.execute(sql, params)
+            cursor.close()
+            return 1
+        except Exception as e:
+            print e
+            return 0
 
 
     def __del__(self):
