@@ -10,6 +10,7 @@ from spiders.RoboSpider import Robo
 from middles.middleAssist import mysqlAssist, logAsisst
 from middles.middleAssist import redisAsisst
 from middles.middleWare import  EasyMethod
+from items.iMqIMData import iMqIMDataCollectItem
 
 from BaseTubes import  BaseTubes
 import time
@@ -37,7 +38,6 @@ class RoboTubes(BaseTubes):
                                 channel_name = i["source"],
                                 plat_id = self.plat_id,
                                 channel_code = i["code"])
-                # self.sql.execute(t)
 		try:
                     self.tubes_menus(i["code"])
 		except:pass
@@ -51,7 +51,6 @@ class RoboTubes(BaseTubes):
                                 name = i["source"],
                                 code = i["code"],
                                 p_code = None if code == self.channelCode else code)
-                # self.sql.execute(t)
                 self.tubes_menus(i["code"])
             else:
                 self.sql.insert(tbName="t_ext_plat_menu",
@@ -61,7 +60,6 @@ class RoboTubes(BaseTubes):
                                 code=i["code"],
                                 p_code=code,
                                 ext=i["ext"])
-                # self.sql.execute(t)
 
     def tubes_detail(self, code, **kwargs):
 
@@ -69,16 +67,20 @@ class RoboTubes(BaseTubes):
             self.pick_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             dataflow = self.obj.parse(code=code, retries=0)
             data = map(None, dataflow["data"].keys(), dataflow["data"].values())
-            plock.acquire()
-            tlock.acquire()
-            dd = dict(dataflow["ext"], **{'indicId:':code})
+           
+       
+            dd = dict(dataflow["ext"], **{'indicId':code})
+	    if self.feature_code.split(":")[-1] != "code":
+		t = self.feature_code.split(":")[-1]
+	    else:t="771263"
             self.sql.insert(tbName="t_ext_data_obj",
                             plat_id = self.plat_id,
+			    channel_code = t,
                             name = dataflow["ext"]["name"],
                             code = kwargs["pcode"],
                             frequence_mode = dataflow["frequency"],
                             frequence = dataflow["value"],
-                            unit = dataflow["unit"],
+                            unit = "" if dataflow['unit'] is None else dataflow["unit"],
                             data_source = dataflow["source"],
                             note = dataflow["pcode"],
                             update_time = dataflow["update_time"],
@@ -87,7 +89,7 @@ class RoboTubes(BaseTubes):
                             is_end = dataflow["is_end"],
                             ext = str(dd),
                             pick_time=self.pick_time)
-
+	    time.sleep(0.01)
             p=self.sql.query("select id from t_ext_data_obj "
                              "where code = '%s' and plat_id=2" % kwargs["pcode"])
             tt = "insert ignore into t_ext_data_node(obj_id, time_t, amo) " \
@@ -97,38 +99,43 @@ class RoboTubes(BaseTubes):
 
 
             tt = tt + ",%s, %s)"
+
+
             self.sql.executemany(tt, tuple(data))
-            # for t in tuple(data):
-            #     self.sql.execute(tt % t)
+	    self.Logger.info("set redis %s-%s"%(self.feature_code, code))
             self.redis.sadd(self.feature_code, code)
-            tlock.release()
-            plock.release()
+            
         except Exception as e:
             self.Logger.error(e)
-            tlock.release()
-            plock.release()
+            
         else:
             return dataflow["data"]
 
     def tubes_heartbeat(self, offset,feature= None):
         print("entering heart beat function")
         if feature is None:
-            tm = "select code, ext from t_ext_plat_menu\
-                                    where ext <> '' group by code, ext order by id\
+            tmp = "select code, ext from t_ext_plat_menu\
+                                    where ext <> '' and plat_id = 2  order by id\
                                      limit %d, 1000" % (offset)
         else:
-            tm = "select code, ext from t_ext_plat_menu\
-                                where ext <> '' and channel_code='%s' group by code, \
-                                 ext order by id\
+            tmp = "select code, ext from t_ext_plat_menu\
+                                where ext <> '' and plat_id=2 and channel_code='%s'\
+                                 order by id\
                                  limit %d, 1000" % ( feature,offset )
-        tmp = self.sql.query(tm)
-        for i in tmp:
+
+	print tmp
+	plock.acquire()
+	tlock.acquire()
+	tmplist = self.sql.query(tmp)
+	tlock.release()
+	plock.release()
+        for i in tmplist:
             yield i
 
     def tmp_crawl(self, feature = None):
 
-        count = feature["offset"]*10000
-        MAX_COUNT = count + 10000
+        count = feature["offset"]*1000
+        MAX_COUNT = count + 1000
         retry = 0
         feature = feature["feature"]
         if feature != '771263':
@@ -151,6 +158,7 @@ class RoboTubes(BaseTubes):
                     pcode = i[0]
                     code  = eval(i[1])["indicId"]
                     if self.redis.sismember(name=self.feature_code, value=code):
+			self.Logger.info("feature[%s-%s] exist!" % (feature,code))
                         continue
                     self.tubes_detail(code=code, pcode=pcode)
                 except Exception as e:
@@ -184,51 +192,51 @@ class RoboTubes(BaseTubes):
         self.Logger.info("-----END-----")
         del self.sql
 
-def gmain(feature, func):
-    gs = [gevent.spawn(func,
-            {"feature": feature["feature"],
-             "offset": feature['offset']+i*1000})
-          for i in range(10)]
-    gevent.joinall(gs)
+
 
 def main(feature, count, hkey):
     print("test....")
 
     p = RoboTubes(platid=2, hkey=hkey)
-    # for i in range(count):
-    # 	p.tmp_crawl({"feature":feature,"offset":i*10000})
-
-    ts = [threading.Thread(name=i,target=gmain,
-                           args=({"feature":feature,"offset":i},p.tmp_crawl,))
-          for i in range(count)]
-    for t in ts:
-        print(t)
-        t.start()
-        time.sleep(2)
-
-
-    for t in ts:
-        t.join()
+    for i in range(count):
+     	p.tmp_crawl({"feature":feature,"offset":i})
+    s = [gevent.spawn(p.tmp_crawl,
+    {"feature":feature,"offset":i}) for i in range(count*10)]
+    gevent.joinall(gs)
+    #or i in range(count):
+#p.tmp_crawl({'feature':feature,'offset':i})
+    #ts = [threading.Thread(name=i,target=p.tmp_crawl,
+     #                      args=({"feature":feature,"offset":i},))
+     #   for i in range(count)]
+    #for t in ts:
+     #   print(t)
+     #   t.start()
+     #   time.sleep(15)
+    
+  
+    #for t in ts:
+    #    t.join()
 
 if __name__ == '__main__':
     import gevent
     from gevent import monkey
     monkey.patch_all()
-    redisAsisst.initAccount()
-    username = ("zzm", "cwf", "wjh", "llb", "fwb","com")
-    for i in username:
-        EasyMethod.RoboEasyLogin(i)
-
+    #redisAsisst.initAccount()
+    import random
+    username = ('cqy', 'lyy', 'hwl', 'mwj', 'lyh', 'wll', 'luyy', 'tby', 'zx', 'mgb', 'wrx', 'lh', 'wwl')
+    
     tmp = {'1138921':8,'402273':17,'771263':51,
-           '632815':23,'RRP1':128,'RRP1349982':13}
+          '632815':23,'RRP1':39,'RRP1349982':13}	
+    ttmp = {'RRP1':39,'RRP1349982':13}
+           
     # gs = [threading.Thread(target=main, args=(i, tmp[i], u, ))
     #       for i,u in zip(tmp,username)]
-    gs = [multiprocessing.Process(target=main, args=(i, tmp[i], u,))
-          for i, u in zip(tmp, username)]
+    gs = [multiprocessing.Process(target=main, args=(i, tmp[i], random.choice(username),))
+          for i in tmp]
 
     for t in gs:
         print(t)
         t.start()
-    #     time.sleep(5)
+        time.sleep(5)
     # for t in gs:
     #     t.join()
