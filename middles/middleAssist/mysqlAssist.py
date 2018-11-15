@@ -60,7 +60,7 @@ class immysql(object):
             cursor.close()
         return result
 
-    def insert(self, tbName, **kwargs):
+    def insert(self, tbName,gId=0,**kwargs):
 
         try:
 
@@ -76,6 +76,8 @@ class immysql(object):
             print(sql)
             cursor.execute(sql, params)
             cursor.close()
+            if gId == 0:
+                return self.query("SELECT MAX(id) FROM "+ tbName)[0][0]
             return 1
         except Exception as e:
             print e

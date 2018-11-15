@@ -1,5 +1,6 @@
 [TOC]
 
+http://index.bitauto.com/public/home/rank
 -------------------
 # Seed_url 
 
@@ -73,6 +74,12 @@
 + http://index.bitauto.com/yicheindexpublic/indextrend
 	+ 获取易车指数排行
 	+ 参数{"serial":[{"name":"LAFESTA 菲斯塔","value":"carmodel_5426"},...],"timeType":"day","fromTime":"2018-11-05","toTime":"2018-11-12"}`
+	+ 获取字段xAxis.data, series.data   
+	+ value 特定， name 任意
+
++ http://index.bitauto.com/yicheindexpublic/praisetrend
+	+ 获取易车口碑
+	+ 参数{"serial":[{"name":"LAFESTA 菲斯塔","value":"carmodel_5426"},...],"timeType":"month","fromTime":"2018-11-05","toTime":"2018-11-12"}`
 	+ 获取字段xAxis.data, series.data   
 	+ value 特定， name 任意
 

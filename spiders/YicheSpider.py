@@ -114,7 +114,7 @@ class Yiche(iimediaBase):
             yield {"objname":"易车指数:市场大盘:%s:%s"%(name,objn),
                    "data":data,
                    "unit":unit,
-                   "freq":freq}, param1
+                   "freq":freq}, {"param":param1}
 
 
 
@@ -166,7 +166,7 @@ class Yiche(iimediaBase):
             data = self._Rconn.hgetall(k)
             objname = objprefix % k.split(":")[-1]
             yield {"objname":objname, "data":data,
-                   "unit":"%", "freq":freq}, -1
+                   "unit":"%", "freq":freq}, {"param":param}
             print("delete %s"%k)
             self._Rconn.delete(k)
             
@@ -238,7 +238,7 @@ class Yiche(iimediaBase):
             objtime  = map(EasyMethod.fuckMonthEnd, objtime) if i else objtime
             objdata  = jsonpath(response, "$..series[*].data")[0]
             yield {"objname":nam, "data":dict(zip(objtime, objdata)),
-                   "unit":"", "freq":4}, param7
+                   "unit":"", "freq":4}, {"param":param7}
 
     def parseSales(self, code, name, **kwargs):
         if kwargs['pid'] > 6 :yield 0
@@ -254,7 +254,8 @@ class Yiche(iimediaBase):
         for obj in objdata:
             yield {"objname":"%s:%s:%s"%(name, objname, obj['name']),
                    "data":{objtime:obj['index']},
-                   "unit":"辆","freq":4}, param9
+                   "unit":"辆","freq":4}, {"param":param9}
+
         self.parseSales(code=code, name=name, pid=kwargs['pid']+1)
 
 if __name__ == '__main__':

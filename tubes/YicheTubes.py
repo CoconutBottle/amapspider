@@ -30,10 +30,10 @@ class YicheTubes(BaseTubes):
         ## 2,1,0
         if not isinstance(code, int): raise ValueError("Code 必须是整数")
         if code in (0,1,2):
-            for i in self.obj.parseMarketMonth(self.obj.obj_urls[code]):
+            for i, p in self.obj.parseMarketMonth(self.obj.obj_urls[code]):
                 try:
-                    i["mode"] = {"mode":code}
-                    yield i
+                    p["mode"] = {"mode":code}
+                    yield i, p
                 except Exception as e:
                     print(e)
         ## 3, 4 type 0
@@ -41,26 +41,25 @@ class YicheTubes(BaseTubes):
         elif code in (3,4,5,6):
             type = 0 if code < 5 else 1
             for m in (0,2,3):
-                for i in self.obj.parseMarketSeason(self.obj.obj_urls[code],
+                for i, p in self.obj.parseMarketSeason(self.obj.obj_urls[code],
                                                     mod=m, type=type):
                     try:
-                        i["mode"] = {"mode":code,"mod":m,"type":type}
-                        yield i
+                        p["mode"] = {"mode":code,"mod":m,"type":type}
+                        yield i, p
                     except Exception as e:print(e)
 
         elif code == 7 or code == 8:
             sql = """
-                SELECT a.channel_code, a.name, a.code FROM t_ext_plat_menu a
-                INNER JOIN t_ext_seed_data b ON b.seed = a.`code`
-                WHERE a.plat_id = 5 AND b.`level` = 0
+                SELECT CONCAT('易车指数:排行榜:趋势:[', b.seed_val,']'), seed FROM t_ext_seed_data b
+                WHERE  b.`level` = 0
             """
             for tt in self._Mconn.query(sql):
-                name, cde = tt[1], tt[-1]
+                name, cde = tt[0], tt[-1]
                 t = self.obj.parseRank(code = cde, name= name)
                 try:
-                    for i in t:
-                        i["mode"] = {"mode":code,"name":name,"code":cde}
-                        yield i
+                    for i, p in t:
+                        p["mode"] = {"mode":code,"name":name,"code":cde}
+                        yield i, p
                 except Exception as e:
                     print(e)
 
@@ -72,9 +71,9 @@ class YicheTubes(BaseTubes):
                 name, cde = tt[1], tt[0]
                 t = self.obj.parseSales(pid=4, code = cde, name="易车指数:排行榜:销量:" + name)
                 try:
-                    for i in t:
-                        i["mode"] = {"mode":code,"name":name,"code":cde}
-                        yield i
+                    for i, p in t:
+                        p["mode"] = {"mode":code,"name":name,"code":cde}
+                        yield i, p
                 except Exception as e:
                     print(e)
         else:
@@ -83,9 +82,72 @@ class YicheTubes(BaseTubes):
     def rConn(self, mode='M'):
         return self._Mconn
 
+    def ModeOption(self, mode, objname):
+        mod = mode['mode']
+        if mod in (0, 1, 2):
+            for i, p in self.obj.parseMarketMonth(self.obj.obj_urls[mod]):
+                if i['objname'] == objname:
+                    return i
+        elif mod in (3,4,5,6):
+            type = 0 if mod < 5 else 1
+            for m in (0,2,3):
+                for i, p in self.obj.parseMarketSeason(self.obj.obj_urls[mod],
+                                                       mod=m, type=type):
+                    try:
+                        if i['objname'] == objname:
+                            return i
+                    except Exception as e:print(e)
+        elif mod == 7 or mod == 8:
+            name = mode['name']
+            code = mode['code']
+            try:
+                for i, p in self.obj.parseRank(code = code, name= name):
+                    if i['objname'] == objname:
+                        return i
+            except Exception as e:
+                print(e)
+        elif mod == 9:
+            name = mode['name']
+            code = mode['code']
+            t = self.obj.parseSales(pid=4, code = code, name="易车指数:排行榜:销量:" + name)
+            try:
+                for i, p in t:
+                    if i['objname'] == objname:
+                        return i
+            except Exception as e:
+                print(e)
+
+
+    def Tubes(self, taskinfo):
+        import datetime
+        try:
+            self.plat_id = taskinfo["plat_id"]
+            code = eval(taskinfo["obj_ext"])
+            mode = code['mode']
+            dataflow = self.ModeOption(mode=mode, objname=taskinfo['objname'])
+            taskinfo['report_time'] = '%s' % \
+                                      datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            taskinfo["data"] = dataflow["data"]
+            taskinfo['process_code'] = os.getpid()
+            return  taskinfo
+
+        except Exception as e:
+            print(e)
+            self.Logger.error(["TubesError[%d]" % os.getpid(), e])
+
+
+
+
+
 if __name__ == '__main__':
     p = YicheTubes()
-    ep = EasyUploadMenu.uploadMenu(conn=p.rConn(), plat=5, channel="YicheCrawl")
-    for k in range(10):
-        for i in p.tubes_detail(k):
-            ep.lubricateObj(i)
+    # ep = EasyUploadMenu.uploadMenu(conn=p.rConn(), plat=5, channel="YicheCrawl")
+    # for k in range(8,9):
+    #     for i, m in p.tubes_detail(k):
+    #         print(i['objname'])
+    #         ep.MagicObj(i, m)
+    #         ep.MagicTree(i)
+    testdict = "{'mode': {'code': u'carmodel_4066', 'mode': 8, 'name': u'\u6613\u8f66\u6307\u6570:\u6392\u884c\u699c:\u8d8b\u52bf:\u6807\u81f42008'}}"
+    testInfo = {"plat_id":333,"obj_ext":testdict, "objname":"易车指数:排行榜:趋势:口碑:标致2008"}
+    t = p.Tubes(testInfo)
+    print(t)
