@@ -83,6 +83,7 @@ class YicheTubes(BaseTubes):
         return self._Mconn
 
     def ModeOption(self, mode, objname):
+        import re
         mod = mode['mode']
         if mod in (0, 1, 2):
             for i, p in self.obj.parseMarketMonth(self.obj.obj_urls[mod]):
@@ -141,13 +142,13 @@ class YicheTubes(BaseTubes):
 
 if __name__ == '__main__':
     p = YicheTubes()
-    # ep = EasyUploadMenu.uploadMenu(conn=p.rConn(), plat=5, channel="YicheCrawl")
-    # for k in range(8,9):
-    #     for i, m in p.tubes_detail(k):
-    #         print(i['objname'])
-    #         ep.MagicObj(i, m)
-    #         ep.MagicTree(i)
-    testdict = "{'mode': {'code': u'carmodel_4066', 'mode': 8, 'name': u'\u6613\u8f66\u6307\u6570:\u6392\u884c\u699c:\u8d8b\u52bf:\u6807\u81f42008'}}"
-    testInfo = {"plat_id":333,"obj_ext":testdict, "objname":"易车指数:排行榜:趋势:口碑:标致2008"}
-    t = p.Tubes(testInfo)
-    print(t)
+    ep = EasyUploadMenu.uploadMenu(conn=p.rConn(), plat=5, channel="YicheCrawl")
+    for k in range(8,9):
+        for i, m in p.tubes_detail(k):
+            print(i['objname'])
+            ep.MagicObj(i, m)
+            ep.MagicTree(i)
+    # testdict = "{'mode': {'code': u'carmodel_1564', 'mode': 8, 'name': u'\u6613\u8f66\u6307\u6570:\u6392\u884c\u699c:\u8d8b\u52bf:\u52c7\u58eb\u76ae\u5361'}, 'param': {'serial': [{'name': u'\u6613\u8f66\u6307\u6570:\u6392\u884c\u699c:\u8d8b\u52bf:\u52c7\u58eb\u76ae\u5361', 'value': u'carmodel_1564'}], 'timeType': 'day', 'fromTime': '2017-01-01', 'toTime': u'2018-11-14'}}"
+    # testInfo = {"plat_id":333,"obj_ext":testdict, "objname":"易车指数:排行榜:趋势:指数:勇士皮卡"}
+    # t = p.Tubes(testInfo)
+    # print(t)

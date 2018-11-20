@@ -19,7 +19,7 @@ from middles.middlePool import userAgent
 
 class Robo(iimediaBase):
     def __init__(self,hkey="Robo"):
-
+        super(Robo, self).__init__()
         name = "RoboSpider"
         self.start_urls = 'https://gw.datayes.com/rrp_adventure/web/supervisor/macro/level/0'
         self.urlContainer = [

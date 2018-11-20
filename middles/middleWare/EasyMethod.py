@@ -11,6 +11,13 @@ import re
 def fuckAntiNum(strDate):
     return re.sub("[^0-9]", "", strDate)
 
+def KeepNum(data):
+    tmp = {}
+    for i in data:
+        if re.search("\d[.0-9]+", data[i]):
+            tmp[i] = data[i]
+    return tmp
+
 
 def fuckMonthEnd(md="", d=0, **kwargs):
     import  calendar
@@ -20,7 +27,8 @@ def fuckMonthEnd(md="", d=0, **kwargs):
         year, month = int(kwargs["year"]), int(kwargs["month"])
         fday, eday = calendar.monthrange(year, month)
     else:
-        if re.search("-", md):
+
+        if re.search("\.|-", md):
             year, month = md.split("-")
             year, month = int(year), int(month)
         else:
@@ -149,5 +157,8 @@ def insert(tbName, **kwargs):
         print e
         return 0
 
+
+
 if __name__ == '__main__':
-    print map(fuckMonthEnd,["201812","201706"])
+    a = { "2017-12-24": "745", "2017-12-23": "729", "2017-03-09": "-", "2017-12-21": "723", "2017-12-20": "741", "2017-03-08": "-", "2018-06-29": "595", "2018-06-28": "637", "2017-12-22": "732", "2017-05-23": "-", "2017-05-22": "-", "2017-05-21": "-", "2017-04-06": "-", "2017-04-07": "-", "2017-04-04": "-", "2017-04-05": "-", "2017-04-02": "-", "2017-04-03": "-", "2017-04-01": "-", "2017-08-28": "-", "2017-04-08": "-", "2017-04-09": "-", "2017-01-05": "-", "2017-01-04": "-", "2017-01-07": "-", "2017-01-06": "-", "2017-01-01": "-", "2017-03-05": "-", "2017-01-03": "-", "2017-01-02": "-"}
+    print( KeepNum(a))
