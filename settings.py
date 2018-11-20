@@ -5,8 +5,8 @@ IsDebug = True
 
 ##RedisHOST PASSWORD AND PORT
 RedisHost = {
-    "host": "10.1.0.253" if IsDebug else "10.0.0.7",
-    "port": 6400 if IsDebug else 7777,
+    "host": "10.1.0.253" if IsDebug else "10.0.0.14",
+    "port": 6400 if IsDebug else 6400,
     "passwd": "",
     "db": 2 if IsDebug else 2
 }

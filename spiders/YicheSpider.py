@@ -180,17 +180,17 @@ class Yiche(iimediaBase):
         carlevels = jsonpath(response0, "$..data[*].children")[0]
         for car in carlevels:
             self._SDBconn.hset("yiche:carlevel:series",car['value'], car['name'])
-            # self._Mconn.insert(tbName="t_ext_seed_data",
-            #                    seed = car['value'],
-            #                    seed_val = car['name'],platform="Yiche",
-            #                    note = obj0, level = 1)
-            self._Mconn.insert(tbName="t_ext_plat_menu",
-                               plat_id = 5,
-                               name="易车指数:排行榜:%s"%car['name'],
-                               channel_code = "yiche_crawl",
-                               code = car['value'],
-                               p_code = "yiche_crawl",
-                               ext = str(car))
+            self._Mconn.insert(tbName="t_ext_seed_data",
+                               seed = car['value'],
+                               seed_val = car['name'],platform="Yiche",
+                               note = obj0, level = 1)
+            # self._Mconn.insert(tbName="t_ext_plat_menu",
+            #                    plat_id = 5,
+            #                    name="易车指数:排行榜:%s"%car['name'],
+            #                    channel_code = "yiche_crawl",
+            #                    code = car['value'],
+            #                    p_code = "yiche_crawl",
+            #                    ext = str(car))
 
         response2 = Yiche.startRequest(url=self.seed_urls[2], data=param2)
         node2     = jsonpath(response2, "$..data")[0]
@@ -199,26 +199,26 @@ class Yiche(iimediaBase):
             pseed     = node['value']
             pname     = node['name']
             print(pname, pseed)
-            # self._Mconn.insert(tbName="t_ext_seed_data",
-            #                    seed  = pseed,
-            #                    seed_val = pname, platform='Yiche',
-            #                    level=-1)
+            self._Mconn.insert(tbName="t_ext_seed_data",
+                               seed  = pseed,
+                               seed_val = pname, platform='Yiche',
+                               level=-1)
             for car in carlevels:
                 value, name = car['value'], car['displayName']
                 self._SDBconn.hset("yiche:carlevel:model",value, name)
                 del car['isChecked'], car['saleStatus']
-                # self._Mconn.insert(tbName="t_ext_seed_data",
-                #                    seed  = value,
-                #                    seed_val = name, platform='Yiche',
-                #                    pseed = pseed, level = 0,
-                #                    note = str(car))
-                self._Mconn.insert(tbName="t_ext_plat_menu",
-                                   plat_id = 5,
-                                   name="易车指数:排行榜:%s"%name,
-                                   channel_code = pseed,
-                                   code = value,
-                                   p_code = pseed,
-                                   ext = str(car))
+                self._Mconn.insert(tbName="t_ext_seed_data",
+                                   seed  = value,
+                                   seed_val = name, platform='Yiche',
+                                   pseed = pseed, level = 0,
+                                   note = str(car))
+                # self._Mconn.insert(tbName="t_ext_plat_menu",
+                #                    plat_id = 5,
+                #                    name="易车指数:排行榜:%s"%name,
+                #                    channel_code = pseed,
+                #                    code = value,
+                #                    p_code = pseed,
+                #                    ext = str(car))
 
 
     def parseRank(self, code=None, name=None, **kwargs):
@@ -260,7 +260,7 @@ class Yiche(iimediaBase):
 
 if __name__ == '__main__':
     p = Yiche()
-
+    p.SeedSaveSQL()
     # for i in p.parseMarketMonth(url_suffix=p.obj_urls[2], mod=1):
     #     print(i["objname"])
     #     print(i["data"])
@@ -268,6 +268,6 @@ if __name__ == '__main__':
     # for i in p.parseMarketSeason(url_suffix=p.obj_urls[-1], mod=2, type=1):
     #     print(i['objname'])
     #     print(i)
-    t = p.parseSales(type='rank-koubei',code='brand',name='xxx')
-    for i in t:
-        print(i)
+    # t = p.parseSales(type='rank-koubei',code='brand',name='xxx')
+    # for i in t:
+    #     print(i)

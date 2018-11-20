@@ -7,6 +7,7 @@ currentUrl = os.path.dirname(__file__)
 parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(parentUrl)
 
+from pyssdb import Client
 import ssdb
 from settings import SsdbHost
 from sshtunnel import SSHTunnelForwarder
@@ -21,6 +22,8 @@ class SSDBsession(object):
     def __del__(self):
         del self
 
+    def multihset(self,name,kvs):
+        map(lambda kvs:self.ssdb.hset(name,kvs[0],kvs[1]), kvs)
 
 class SshSSDB(SSDBsession):
     def __init__(self):
@@ -55,19 +58,8 @@ tt = [
 
 if __name__ == '__main__':
     import random, re
-    p = SshSSDB().connect()
-    with open("E:\\test\\account.txt", "r") as f:
-        fr = f.readlines()
-        B = []
-        for i in fr:
-            a = {}
-            uname, phone, passwd = i.split(",")
-            print(uname)
-            a["cookie"] = random.choice(tt)
-            a["account"] = [phone, re.sub("\n","",passwd)]
-            p.hset("robo:accountInfo", uname, a)
-            B.append(uname)
-        p.set("robo:uname", B)
-        print(B)
-        f.close()
-        del p
+    p = SSDBsession().connect()
+    n = p.hkeys("s","",)
+    for i in n:
+        if re.search("s_o_d", i):
+            print(i)

@@ -11,6 +11,9 @@ from middles.middleAssist import ssdbAssist
 from middles.middleAssist import redisAsisst
 from middles.middleAssist import mysqlAssist
 
+
+SSDB_DEFAULT_KEY = "s_o_d_i_{}"
+
 seriesId = 0
 treeId = 1
 class uploadMenu(object):
@@ -18,10 +21,10 @@ class uploadMenu(object):
         self.conn = conn
         self.plat = plat
         self.channel = channel
-
+        self._SSDB = ssdbAssist.SSDBsession()
         self._Rconn = redisAsisst.imredis().connection()
 
-
+        self._SSDB.connect().keys()
 
     def MagicTree(self, obj):
         objname = obj['objname']
@@ -49,7 +52,7 @@ class uploadMenu(object):
             code = code,
             channel_code = "YicheCrawl",
             name = obj['objname'],
-            unit = obj['unit'],
+            unit = "" if obj['unit'] is None else obj['unit'],
             frequence_mode = obj['freq'],
             ext = str(param)
         )
@@ -57,7 +60,11 @@ class uploadMenu(object):
         self._SlowLoadNode(mid=mid, data=obj['data'])
 
     def _SlowLoadNode(self, mid, data={}):
+
         data = data.items()
+        self._Rconn.sadd("SSDB:HKEYS", SSDB_DEFAULT_KEY.format(mid))
+
+        self._SSDB.multihset(SSDB_DEFAULT_KEY.format(mid), data)
         sql  = "INSERT IGNORE INTO `t_ext_data_node` (`obj_id`, `time_t`, `amo`) VALUES ({}, %s, %s)"
         sql  = sql.format(mid)
         self.conn.executemany(sql=sql, params=data)
@@ -91,9 +98,10 @@ class uploadMenu(object):
 
     def __del__(self):
         self.loadTree()
-        self._Rconn.flushdb()
-
-
+        map(self._Rconn.delete,
+            self._Rconn.keys("plat{}*".format(self.plat)))
+        del self
+        print("FlushDB All KEYS -plat*")
 
 
 if __name__ == '__main__':
