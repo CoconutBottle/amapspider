@@ -27,8 +27,8 @@ def fuckMonthEnd(md="", d=0, **kwargs):
         year, month = int(kwargs["year"]), int(kwargs["month"])
         fday, eday = calendar.monthrange(year, month)
     else:
-
-        if re.search("\.|-", md):
+        md = re.sub("[^\-0-9]","-",md)
+        if re.search("-", md):
             year, month = md.split("-")
             year, month = int(year), int(month)
         else:

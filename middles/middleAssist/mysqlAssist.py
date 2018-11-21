@@ -71,13 +71,17 @@ class immysql(object):
             dataTuple = tuple(kwargs.values())
             dbField = str(tuple(dbField)).replace("'", '')
             cursor = self.get_cursor()
-            sql = """replace into %s %s values %s """ % (tbName, dbField, data_values)
+            sql = """insert ignore into %s %s values %s """ % (tbName, dbField, data_values)
             params = dataTuple
             print(sql)
             cursor.execute(sql, params)
             cursor.close()
             if gId == 0:
-                return self.query("SELECT MAX(id) FROM "+ tbName)[0][0]
+                sql = "SELECT id FROM %s WHERE plat_id=%s" \
+                      " and name='%s'"%(tbName,
+                                        kwargs['plat_id'],
+                                        kwargs['name'])
+                return self.query(sql)[0][0]
             return 1
         except Exception as e:
             print e
