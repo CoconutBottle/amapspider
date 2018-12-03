@@ -40,7 +40,7 @@ class immysql(object):
         finally:
             cursor.close()
         return affected_rows
-
+    # @property
     def close(self):
         try:
             self.conn.close()

@@ -23,6 +23,19 @@ def try_except(f):
 
     return wrap
 
+def try_except_callself(f):
+    import time
+    def wrap(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except Exception as e:
+            print(e)
+            print("sleep 300 sec!")
+            time.sleep(10)
+            return f(*args, **kwargs)
+
+    return wrap
+
 def tryexcept(logname):
     def func_wrapper(func):
         @wraps(func)
@@ -35,6 +48,9 @@ def tryexcept(logname):
 
         return return_wrapper
     return func_wrapper
+
+
+
 
 @tryexcept("testtest")
 def test(e = "test"):

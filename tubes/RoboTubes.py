@@ -38,9 +38,7 @@ class RoboTubes(BaseTubes):
                                 channel_name = i["source"],
                                 plat_id = self.plat_id,
                                 channel_code = i["code"])
-		try:
-                    self.tubes_menus(i["code"])
-		except:pass
+
 
     def tubes_menus(self, code):
         for i in self.obj.parseItem(code):
@@ -70,9 +68,9 @@ class RoboTubes(BaseTubes):
            
        
             dd = dict(dataflow["ext"], **{'indicId':code})
-	    if self.feature_code.split(":")[-1] != "code":
-		t = self.feature_code.split(":")[-1]
-	    else:t="771263"
+            if self.feature_code.split(":")[-1] != "code":
+            t = self.feature_code.split(":")[-1]
+            else:t="771263"
             self.sql.insert(tbName="t_ext_data_obj",
                             plat_id = self.plat_id,
 			    channel_code = t,
@@ -89,7 +87,7 @@ class RoboTubes(BaseTubes):
                             is_end = dataflow["is_end"],
                             ext = str(dd),
                             pick_time=self.pick_time)
-	    time.sleep(0.01)
+            time.sleep(0.01)
             p=self.sql.query("select id from t_ext_data_obj "
                              "where code = '%s' and plat_id=2" % kwargs["pcode"])
             tt = "insert ignore into t_ext_data_node(obj_id, time_t, amo) " \
@@ -102,7 +100,7 @@ class RoboTubes(BaseTubes):
 
 
             self.sql.executemany(tt, tuple(data))
-	    self.Logger.info("set redis %s-%s"%(self.feature_code, code))
+            self.Logger.info("set redis %s-%s"%(self.feature_code, code))
             self.redis.sadd(self.feature_code, code)
             
         except Exception as e:
@@ -123,14 +121,14 @@ class RoboTubes(BaseTubes):
                                  order by id\
                                  limit %d, 1000" % ( feature,offset )
 
-	print tmp
-	plock.acquire()
-	tlock.acquire()
-	tmplist = self.sql.query(tmp)
-	tlock.release()
-	plock.release()
-        for i in tmplist:
-            yield i
+        print tmp
+        plock.acquire()
+        tlock.acquire()
+        tmplist = self.sql.query(tmp)
+        tlock.release()
+        plock.release()
+            for i in tmplist:
+                yield i
 
     def tmp_crawl(self, feature = None):
 
@@ -158,7 +156,7 @@ class RoboTubes(BaseTubes):
                     pcode = i[0]
                     code  = eval(i[1])["indicId"]
                     if self.redis.sismember(name=self.feature_code, value=code):
-			self.Logger.info("feature[%s-%s] exist!" % (feature,code))
+                        self.Logger.info("feature[%s-%s] exist!" % (feature,code))
                         continue
                     self.tubes_detail(code=code, pcode=pcode)
                 except Exception as e:
@@ -199,7 +197,7 @@ def main(feature, count, hkey):
 
     p = RoboTubes(platid=2, hkey=hkey)
     for i in range(count):
-     	p.tmp_crawl({"feature":feature,"offset":i})
+        p.tmp_crawl({"feature":feature,"offset":i})
     s = [gevent.spawn(p.tmp_crawl,
     {"feature":feature,"offset":i}) for i in range(count*10)]
     gevent.joinall(gs)

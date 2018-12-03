@@ -14,6 +14,7 @@ from items.CommonItem import commonItem
 from lxml import html
 from middles.middleWare import digitalConfig
 from middles.middleAssist import mysqlAssist
+from middles.middleWare import EasyDecorate
 import re
 import jsonpath, json
 from itertools import chain
@@ -35,6 +36,8 @@ class xpathRules(object):
     xname    = "//*[@id=\"aliindex-masthead\"]/div/div[3]/div[{}]/div/ul/li/a/@title"
     xhname   = "//*[@id=\"aliindex-masthead\"]/div/div[3]/div[{}]/p/a/text()"
 
+    xdata  = "//input[@id=\"main-chart-val\"]/@value"
+    xlastday = "//*[@id=\"main-chart-lastDate\"]/@value"
 
 
 
@@ -50,21 +53,25 @@ class AliInd(iimediaBase):
         if open_sql:
             self._Mconn = mysqlAssist.immysql()
 
+    @EasyDecorate.try_except_callself
     def Request(self, url, callback, **kwargs):
-        import urllib2
-        handler = urllib2.ProxyHandler(self.proxies)
-        opener  = urllib2.build_opener(handler)
-        urllib2.install_opener(opener)
+
+        import requests
 
         try:
-            import urllib
-            data = urllib.urlencode(kwargs['data']).encode("utf8")
+            # import urllib
+            data = kwargs['data']
+            # data = urllib.urlencode(kwargs['data']).encode("utf8")
         except:
-            req  = urllib2.Request(url, headers=self.headers)
+            contents = requests.get(url=url, headers=self.headers
+                                    , proxies=self.proxies)
+            # req  = urllib2.Request(url, headers=self.headers)
         else:
-            req  = urllib2.Request(url,data=data, headers=self.headers)
+            contents = requests.post(url=url, headers=self.headers,data=data,
+                                     proxies=self.proxies)
+            # req  = urllib2.Request(url,data=data, headers=self.headers)
 
-        contents= urllib2.urlopen(req).read()
+        contents= contents.content
         if callback is None:
             return contents.decode("utf8")
         else:
@@ -106,74 +113,40 @@ class AliInd(iimediaBase):
             self.parse_url(response= response, layer=kwargs["layer"]+1, pkey = dkey)
 
 
-    def parse_parkey(self, response):
-        """
+    def parse_menu(self, cat="", objname=""):
+        url = self.seed_url+cat
+        response = self.Request(url = url,callback=None)
+        response = html.fromstring(response)
 
-        :param response: get parent key
-        :return: Request
-        """
-        tree = html.fromstring(response)
+        data_sets= response.xpath(xpathRules.xdata)
+        data_sets= json.loads(data_sets[0])
 
-        Key = tree.xpath("{}|{}".format(xpathRules.xheadPKey, xpathRules.xparKey))
+        last_day = response.xpath(xpathRules.xlastday)[0]
+        timeT    = digitalConfig.getdatelist(last_day, )
 
-        for cat in Key[:2]:
-            self.tmpurl = self.seed_url+cat
-            self.Request(url=self.tmpurl,
-                         callback=self.parse)
+        for k in data_sets:
+            # obj = "{}:{}".format(indt_dict[k], objname)
 
+            ratio = jsonpath.jsonpath(data_sets[k], "$..contrast.history")
+            timeT    = digitalConfig.getdatelist(start=last_day,
+                                                 between=len(ratio[0]),
+                                                 reverse=True)
+            yield {"objname":"{}:{}:{}".format(indt_dict[k], indt_dict[1], objname),
+                   "data":dict(zip(timeT, ratio[0]))}
 
-    def parse(self, response):
-        """
-
-        :param response:
-        :return: obj指标相关数据
-        """
-        from itertools import chain
-
-        global indt_dict
-
-        item = commonItem()
-
-        tree = html.fromstring(response)
-        objname = tree.xpath("{}|{}".format(xpathRules.xheadPname,
-                                            xpathRules.xheadSname))
-        data = tree.xpath(xpathRules.xdata)
-        data_json = json.loads(data[0])
-
-        last_dates= tree.xpath(xpathRules.xlastDate)[0]
-
-        for pkey in data_json:
-
-            data_sets = jsonpath.jsonpath(data_json[pkey], "$..history")
-            for i, data_obj in enumerate(data_sets):
-                obj = chain([indt_dict[pkey]] , objname , [indt_dict[i]])
-
-                item.objname = ":".join(obj)
-                item.mode    = {"url":re.search("cat=(.+)$",self.tmpurl).group(1),
-                                "key":pkey, "mode":"Ah"}
-
-                date     = digitalConfig.getdatelist(start=last_dates,
-                                                     between=len(data_obj),
-                                                     reverse=True)
-                item.data= dict(zip(date, data_obj))
-                # print item.objname, item()
-        sKey = tree.xpath("{}|{}".format(xpathRules.xheadSKey, xpathRules.xsonKey))
-        tmp = self.tmpurl
-        for i in sKey:
-            if i == "-1":continue
-            self.tmpurl = self.tmpurl+","+i
-            print(self.tmpurl)
-            self.tmpurl = tmp
+            data  = jsonpath.jsonpath(data_sets[k], "$..index.history")
+            timeT    = digitalConfig.getdatelist(start=last_day,
+                                                 between=len(data[0]),
+                                                 reverse=True)
+            yield {"objname":"{}:{}:{}".format(indt_dict[k], indt_dict[0], objname),
+                   "data":dict(zip(timeT, data[0]))}
 
 
 
 
-def f():
-    for i in range(4):
-        yield i
-        for k in range(5,8):
-            yield k
-            yield i
+
+
+
 
 
 
@@ -181,5 +154,8 @@ def f():
 if __name__ == '__main__':
     p = AliInd(open_sql=True)
 
-    res = p.Request(p.start_urls, None)
-    p.parse_url(response=res, layer=1)
+    # res = p.Request(p.start_urls, None)
+    # p.parse_url(response=res, layer=1)
+    for i in p.parse_menu(cat='1033199', objname="Thisrt"):
+        print(i['objname'])
+        print(i)

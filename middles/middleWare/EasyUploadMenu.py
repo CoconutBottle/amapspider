@@ -54,17 +54,26 @@ class uploadMenu(object):
         pinyincode = "%05d"%seriesId
         seriesId += 1
         print("param >>>", param['mode']['mode'])
-        code = "%d%s"%(param['mode']['mode'], pinyincode)
-        mid = self.conn.insert(
-            tbName = "t_ext_data_obj",
-            plat_id = self.plat,
-            code = code,
-            channel_code = self.channel_code,
-            name = obj['objname'],
-            unit = "" if obj['unit'] is None else obj['unit'],
-            frequence_mode = obj['freq'],
-            ext = str(param) if not isinstance(param, str) else param
-        )
+        code = "%s%s"%(param['mode']['mode'], pinyincode)
+        mid = self.conn.query("select id from t_ext_data_obj "
+                              "where plat_id=%s and name='%s'"%(self.plat, obj['objname']))
+        try:
+            mid = mid[0][0]
+            if not mid:
+                raise ValueError
+        except:
+
+            mid = self.conn.insert(
+                tbName = "t_ext_data_obj",
+                plat_id = self.plat,
+                code = code,
+                channel_code = self.channel_code,
+                name = obj['objname'],
+                data_source = self.channel,
+                unit = "" if obj['unit'] is None else obj['unit'],
+                frequence_mode = obj['freq'],
+                ext = str(param) if not isinstance(param, str) else param
+            )
 
         self._SlowLoadNode(mid=mid, data=obj['data'])
 
@@ -74,7 +83,7 @@ class uploadMenu(object):
         self._Rconn.sadd("SSDB:HKEYS", SSDB_DEFAULT_KEY.format(mid))
 
         self._SSDB.multihset(SSDB_DEFAULT_KEY.format(mid), data)
-        sql  = "INSERT IGNORE INTO `t_ext_data_node` (`obj_id`, `time_t`, `amo`) VALUES ({}, %s, %s)"
+        sql  = "REPLACE INTO `t_ext_data_node` (`obj_id`, `time_t`, `amo`) VALUES ({}, %s, %s)"
         sql  = sql.format(mid)
         self.conn.executemany(sql=sql, params=data)
 
@@ -106,7 +115,7 @@ class uploadMenu(object):
                 self.loadTree(node=nod, seriesId=trId)
 
     def __del__(self):
-        self.loadTree()
+        # self.loadTree()
         map(lambda x:self._Rconn.expire(x, 300),
             self._Rconn.keys("plat{}*".format(self.plat)))
         self.conn.query(

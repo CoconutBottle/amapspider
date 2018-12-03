@@ -13,7 +13,7 @@ from spiders.zhongtouSpider import ZhongTou
 from spiders import zhongtouSpider
 from middles.middleAssist import mysqlAssist
 from middles.middleWare import EasyDecorate
-
+from middles.middleAssist import redisAsisst
 logname = "test"
 
 
@@ -22,29 +22,36 @@ class zhongtouTubes(BaseTubes):
         global logname
         BaseTubes.__init__(self, platid = platid, taskid= taskid,
                            objid =  objid)
-
+        self._Rconn = redisAsisst.imredis().connection()
         self._Mconn = mysqlAssist.immysql()
 
-    def rConn(self):
-        return self._Mconn
+    def rConn(self, mode = 'm'):
+        if mode == 'm':
+            return self._Mconn
+        elif mode == 'r':
+            return self._Rconn
 
     # @EasyDecorate.tryexcept(logname)
     def tubes_detail(self, code):
         import re
-        obj = ZhongTou()
-        for k, i in enumerate(obj.auto_crawl()):
 
-            obj_code = re.search("rnd1=.*\.(\d+)",i).group(1)
-            print(obj_code)
-            for item in obj.parse_detail(url=i, channelname=obj.channelname[k]):
-                yield item
+        obj = ZhongTou()
+        obj.auto_crawl()
+        for i in self._Rconn.smembers("ZT:obj"):
+            yield eval(i)
+
 
     def Tubes(self, taskinfo):
         import datetime
         obj = ZhongTou()
+
         self.plat_id = taskinfo["plat_id"]
         code = eval(taskinfo["obj_ext"])
         mode = code['mode']
+
+
+
+        obj.channelname = (mode['name'], mode['code'])
 
         dataflow = next(obj.parse_detail(url=mode['url'],
                                     specify=1,
@@ -63,20 +70,27 @@ if __name__ == '__main__':
     if choice != 'y':
         raise ValueError("初始化退出")
     p = zhongtouTubes()
-    # zhongtouSpider.giveCookie('set')
-    # test = {"obj_id":"xxxx","obj_name":"中国投资频道:国内生产总值:上交所日均成交额",
-    #         "obj_ext":"{'mode': {'url': u'http://www.macrodb.com:8000/data_m/prg/showdata.asp?ffrm=1&prg=tab&rnd1=.7232259', 'mode': 1, 'name': u'\u4e2d\u56fd\u6295\u8d44\u9891\u9053:\u4f01\u4e1a\u6548\u76ca:\u672c\u6708\u6df1\u8bc1\u7efc\u5408\u6307\u6570\u6700\u4f4e\u70b9'}}",
+    zhongtouSpider.giveCookie('set')
+    # test = {"obj_id":"xxxx","obj_name":"中国投资:沪深股市:上证综合指数月末收盘",
+    #         "obj_ext":"{'mode': {'url': u'http://www.macrodb.com:8000/dat
+    # a_m/prg/showdata.asp?ffrm=1&prg=tab&rnd1=.5070462', 'code': 'TRP1',
+    # 'mode': 'Z', 'name': u'\u6caa\u6df1\u80a1\u5e02'}}",
+    # 'mode': 'Z', 'name': u'\u6caa\u6df1\u80a1\u5e02'}}",
     #         "plat_id":"6"}
     ep = EasyUploadMenu.uploadMenu(conn=p.rConn(), plat=6,
                                    channel="中国投资协会", prefix="ZT")
     ep.setChannelCode("chinainvest")
+    p.rConn('r').delete('ZT:obj')
     for i in p.tubes_detail('test'):
         mode = {}
         mode["mode"] = i["mode"]
 
+
         del i["mode"]
         ep.MagicObj(i, mode)
         ep.MagicTree(i)
-    # print(p.Tubes(test))
 
+    # tt = p.Tubes(test)
+    # print(tt['obj_name'])
+    # print(tt)
 
