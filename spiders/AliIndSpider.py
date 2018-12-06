@@ -18,6 +18,10 @@ from middles.middleWare import EasyDecorate
 import re
 import jsonpath, json
 from itertools import chain
+import gevent
+from gevent import monkey
+monkey.patch_all()
+
 layer = 1
 indt_dict = {
     "purchaseIndex1688":"1688采购指数",
@@ -77,6 +81,13 @@ class AliInd(iimediaBase):
         else:
             callback(contents.decode("utf8"))
 
+    def g_event(self,dkey,layer):
+        response = self.Request(url=self.seed_url+dkey,
+                                callback=None)
+        self.parse_url(response= response,
+                       layer=layer+1,
+                       pkey = dkey)
+
     def parse_url(self, response, **kwargs):
         """
 
@@ -107,10 +118,10 @@ class AliInd(iimediaBase):
                                platform="Alizs",
                                level=0)
 
-            print(dkey)
-            print(dtitle)
-            response = self.Request(url=self.seed_url+dkey, callback=None)
-            self.parse_url(response= response, layer=kwargs["layer"]+1, pkey = dkey)
+        gs = [gevent.spawn(self.g_event, p, layer) for p in data_key]
+        gevent.joinall(gs)
+
+
 
 
     def parse_menu(self, cat="", objname=""):
@@ -131,31 +142,56 @@ class AliInd(iimediaBase):
             timeT    = digitalConfig.getdatelist(start=last_day,
                                                  between=len(ratio[0]),
                                                  reverse=True)
-            yield {"objname":"{}:{}:{}".format(indt_dict[k], indt_dict[1], objname),
-                   "data":dict(zip(timeT, ratio[0]))}
+            yield {"objname":"行业大盘:{}:{}:{}".format(indt_dict[k], indt_dict[1], objname),
+                   "data":dict(zip(timeT, ratio[0])),
+                   'unit':"%",
+                   'cat':cat}
 
             data  = jsonpath.jsonpath(data_sets[k], "$..index.history")
             timeT    = digitalConfig.getdatelist(start=last_day,
                                                  between=len(data[0]),
                                                  reverse=True)
-            yield {"objname":"{}:{}:{}".format(indt_dict[k], indt_dict[0], objname),
-                   "data":dict(zip(timeT, data[0]))}
+            yield {"objname":"行业大盘:{}:{}:{}".format(indt_dict[k], indt_dict[0], objname),
+                   "data":dict(zip(timeT, data[0])),
+                   "unit":"",
+                   "cat":cat}
+
+    def Conn(self):
+        return self._Mconn
 
 
 
+def GenSeed(code, name=None):
+    sql = "SELECT seed,seed_val FROM `t_ext_seed_data`" \
+          " WHERE `platform` = 'Alizs' AND `pseed` = '%s'"%code
+    conn= mysqlAssist.immysql()
+    for i in conn.query(sql):
+        yield i
 
 
-
-
-
-
+def process(code,name):
+    for i in GenSeed(code):
+        objname = "%s:%s"%(name,i[1])
+        for k in p.parse_menu(cat=i[0], objname=objname):
+            k['freq'] = 2
+            k['mode'] = {"cat":k['cat'],"mode":"A"}
+            ep.loadSQL(k)
+        process(i[0], objname)
 
 
 if __name__ == '__main__':
+    from middles.middleWare import EasyUploadMenu
     p = AliInd(open_sql=True)
-
+    ep = EasyUploadMenu.uploadMenu(
+        conn=p.Conn(),
+        plat=7,
+        channel="阿里指数",
+        prefix="AL"
+    )
+    ep.setChannelCode("Alizs")
     # res = p.Request(p.start_urls, None)
     # p.parse_url(response=res, layer=1)
-    for i in p.parse_menu(cat='1033199', objname="Thisrt"):
-        print(i['objname'])
-        print(i)
+
+    process(0,"频道")
+    # for i in p.parse_menu(cat='1033199', objname="Thisrt"):
+    #     ep.loadSQL(i)

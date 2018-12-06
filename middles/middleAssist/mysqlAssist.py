@@ -17,7 +17,7 @@ class immysql(object):
     def __init__(self, db=None):
         if db is  None:
             db = MysqlHost["db"]
-        self.conn = pymysql.connect(
+            self.conn = pymysql.connect(
             host=MysqlHost["host"],
             port=MysqlHost["port"],
             user=MysqlHost["user"],
@@ -75,6 +75,7 @@ class immysql(object):
             params = dataTuple
             print(sql)
             cursor.execute(sql, params)
+
             cursor.close()
             if gId == 0:
                 sql = "SELECT id FROM %s WHERE plat_id=%s" \

@@ -28,7 +28,7 @@ class uploadMenu(object):
 
     def setChannelCode(self, name):
         import re
-        if re.search("[^0-9a-z]", name):
+        if re.search("[^0-9a-zA-Z]", name):
             raise ValueError("name 只可以为字母数字")
         print(name)
         self.channel_code = name
@@ -55,7 +55,7 @@ class uploadMenu(object):
         seriesId += 1
         print("param >>>", param['mode']['mode'])
         code = "%s%s"%(param['mode']['mode'], pinyincode)
-        mid = self.conn.query("select id from t_ext_data_obj "
+        mid = self.conn.query("select id,plat_id from t_ext_data_obj "
                               "where plat_id=%s and name='%s'"%(self.plat, obj['objname']))
         try:
             mid = mid[0][0]
@@ -75,10 +75,10 @@ class uploadMenu(object):
                 ext = str(param) if not isinstance(param, str) else param
             )
 
-        self._SlowLoadNode(mid=mid, data=obj['data'])
+        self._LoadNode(mid=mid, data=obj['data'])
 
-    def _SlowLoadNode(self, mid, data={}):
-
+    def _LoadNode(self, mid, data={}):
+        print(data)
         data = data.items()
         self._Rconn.sadd("SSDB:HKEYS", SSDB_DEFAULT_KEY.format(mid))
 
@@ -114,10 +114,22 @@ class uploadMenu(object):
                              p_code = seriesId)
                 self.loadTree(node=nod, seriesId=trId)
 
+    def loadSQL(self, obj):
+        i = obj
+        p = {"mode":obj['mode']}
+
+        self.MagicObj(obj=i, param=p)
+        self.MagicTree(obj=i)
+
     def __del__(self):
-        # self.loadTree()
+        self.loadTree()
         map(lambda x:self._Rconn.expire(x, 300),
             self._Rconn.keys("plat{}*".format(self.plat)))
+
+        self.conn.query("insert ignore into t_ext_data_channel(plat_id,"
+                        " channel_name, channel_code) values "
+                        "('%s','%s','%s')"%(self.plat, self.channel, self.channel_code))
+
         self.conn.query(
             """UPDATE t_ext_plat_menu a 
                 LEFT JOIN t_ext_data_obj b ON b.plat_id = {} AND a.name = b.name
