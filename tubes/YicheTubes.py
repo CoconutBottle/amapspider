@@ -13,7 +13,7 @@ from spiders.YicheSpider import Yiche
 from middles.middleAssist import mysqlAssist
 from middles.middleWare import EasyMethod, EasyUploadMenu
 from middles.middleAssist import logAsisst
-logname = 'test'
+logname = "Test"
 
 class YicheTubes(BaseTubes):
     def __init__(self, platid=None, taskid=None, objid=None,**kwargs):
@@ -23,7 +23,7 @@ class YicheTubes(BaseTubes):
         self.obj = Yiche()
         self._Mconn = mysqlAssist.immysql()
 
-        #self.Logger = logAsisst.imLog(logname)()
+        self.Logger = logAsisst.imLog(logname)()
 
     def tubes_detail(self, code, **kwargs):
 
@@ -36,6 +36,7 @@ class YicheTubes(BaseTubes):
                     yield i, p
                 except Exception as e:
                     print(e)
+		    self.Logger.error(e)
         ## 3, 4 type 0
         ## 5, 6 type 1
         elif code in (3,4,5,6):
@@ -46,11 +47,13 @@ class YicheTubes(BaseTubes):
                     try:
                         p["mode"] = {"mode":code,"mod":m,"type":type}
                         yield i, p
-                    except Exception as e:print(e)
+                    except Exception as e:
+			print(e)
+			self.Logger.error(e)
 
         elif code == 7 or code == 8:
             sql = """
-                SELECT CONCAT('易车指数:排行榜:趋势:[', b.seed_val,']'), seed FROM t_ext_seed_data b
+                SELECT CONCAT('易车指数##排行榜##趋势##[', b.seed_val,']'), seed FROM t_ext_seed_data b
                 WHERE  b.`level` = 0
             """
             for tt in self._Mconn.query(sql):
@@ -62,6 +65,7 @@ class YicheTubes(BaseTubes):
                         yield i, p
                 except Exception as e:
                     print(e)
+		    self.Logger.error(e)
 
         elif code ==9:
             sql = """
@@ -69,13 +73,15 @@ class YicheTubes(BaseTubes):
             """
             for tt in self._Mconn.query(sql):
                 name, cde = tt[1], tt[0]
-                t = self.obj.parseSales(pid=4, code = cde, name="易车指数:排行榜:销量:" + name)
+                t = self.obj.parseSales(pid=4, code = cde, name="易车指数##排行榜##销量##" + name)
                 try:
                     for i, p in t:
                         p["mode"] = {"mode":code,"name":name,"code":cde}
                         yield i, p
                 except Exception as e:
                     print(e)
+		    self.Logger.error(e)
+
         else:
             raise ValueError("code 取值只能是0~9")
 
@@ -110,7 +116,7 @@ class YicheTubes(BaseTubes):
         elif mod == 9:
             name = mode['name']
             code = mode['code']
-            t = self.obj.parseSales(pid=4, code = code, name="易车指数:排行榜:销量:" + name)
+            t = self.obj.parseSales(pid=4, code = code, name="易车指数##排行榜##销量##" + name)
             try:
                 for i, p in t:
                     if i['objname'] == objname:
@@ -121,14 +127,15 @@ class YicheTubes(BaseTubes):
 
     def Tubes(self, taskinfo):
         import datetime
+        print taskinfo
         try:
             self.plat_id = taskinfo["plat_id"]
             code = eval(taskinfo["obj_ext"])
             mode = code['mode']
-            dataflow = self.ModeOption(mode=mode, objname=taskinfo['objname'])
+            dataflow = self.ModeOption(mode=mode, objname=taskinfo['obj_name'])
             taskinfo['report_time'] = '%s' % \
                                       datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            taskinfo["data"] = dataflow["data"]
+            taskinfo["data"] = EasyMethod.KeepNum(dataflow["data"])
             taskinfo['process_code'] = os.getpid()
             return  taskinfo
 
@@ -138,17 +145,41 @@ class YicheTubes(BaseTubes):
 
 
 
+def updateObj():
+    import gevent
+    from gevent import monkey
+    monkey.patch_all()
+    p = YicheTubes()
+    print("Update...SeedVal")
+    # p.obj.SeedSaveSQL()
 
+    print("Update...obj")
+    ep = EasyUploadMenu.uploadMenuQueue(conn=p.rConn(), plat=5, channel="YicheCrawl")
+    ep.setChannelCode("YicheCrawl")
+    gt = [gevent.spawn(funchelper, p.tubes_detail, ep, i )
+          for i in range(10)]
+    gevent.joinall(gt)
+
+
+def funchelper(func, func1, k):
+    for i, m in func(k):
+        print(i['objname'])
+        func1.MagicObj(i,m)
+        func1.MagicTree(i)
+
+def getObjData():
+    from middles.middleWare import fakeQueue
+    qname = "tmpCollectDATAqueue"
+    print(qname)
+    queue = fakeQueue.RedisQueue(qname, "5")
+    while True:
+        try:
+            data = eval(queue.get(timeout=30))
+            yield data
+        except Exception as e:
+            print(e)
+            yield -1
 
 if __name__ == '__main__':
-    p = YicheTubes()
-    ep = EasyUploadMenu.uploadMenu(conn=p.rConn(), plat=5, channel="YicheCrawl")
-    for k in range(8,9):
-        for i, m in p.tubes_detail(k):
-            print(i['objname'])
-            ep.MagicObj(i, m)
-            ep.MagicTree(i)
-    # testdict = "{'mode': {'code': u'carmodel_1564', 'mode': 8, 'name': u'\u6613\u8f66\u6307\u6570:\u6392\u884c\u699c:\u8d8b\u52bf:\u52c7\u58eb\u76ae\u5361'}, 'param': {'serial': [{'name': u'\u6613\u8f66\u6307\u6570:\u6392\u884c\u699c:\u8d8b\u52bf:\u52c7\u58eb\u76ae\u5361', 'value': u'carmodel_1564'}], 'timeType': 'day', 'fromTime': '2017-01-01', 'toTime': u'2018-11-14'}}"
-    # testInfo = {"plat_id":333,"obj_ext":testdict, "objname":"易车指数:排行榜:趋势:指数:勇士皮卡"}
-    # t = p.Tubes(testInfo)
-    # print(t)
+    updateObj()
+

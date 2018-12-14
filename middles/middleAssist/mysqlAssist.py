@@ -17,7 +17,7 @@ class immysql(object):
     def __init__(self, db=None):
         if db is  None:
             db = MysqlHost["db"]
-            self.conn = pymysql.connect(
+        self.conn = pymysql.connect(
             host=MysqlHost["host"],
             port=MysqlHost["port"],
             user=MysqlHost["user"],
@@ -75,7 +75,7 @@ class immysql(object):
             params = dataTuple
             print(sql)
             cursor.execute(sql, params)
-
+	  
             cursor.close()
             if gId == 0:
                 sql = "SELECT id FROM %s WHERE plat_id=%s" \
@@ -83,11 +83,11 @@ class immysql(object):
                                         kwargs['plat_id'],
                                         kwargs['name'])
                 return self.query(sql)[0][0]
-            return 1
+            
         except Exception as e:
-            print e
+            print "Mysql error", e
             return 0
-
+	
 
     def __del__(self):
         self.conn.close()
@@ -161,3 +161,8 @@ class bjxmysql(object):
 
     def __del__(self):
         self.conn.close()
+
+if __name__ == '__main__':
+    conn = immysql()
+    conn.insert(tbName="t_test_table",
+		name= "test",gId=1)

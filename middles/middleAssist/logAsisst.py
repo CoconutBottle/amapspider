@@ -11,7 +11,7 @@ class imLog(object):
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.INFO)  # Log等级总开关
         filename = "./logs/" + '%s.log' % filename
-        fh = logging.handlers.RotatingFileHandler(filename, maxBytes=1024 * 1024 * 1, backupCount=20)
+        fh = logging.handlers.RotatingFileHandler(filename, maxBytes=1024 * 1024 * 100, backupCount=5)
         # 创建一个handler，用于写入日志文件
         datefmt = '%Y-%m-%d %H:%M:%S'
         format_str = '%(asctime)s %(levelname)s %(filename)s[line:%(lineno)d] %(message)s '

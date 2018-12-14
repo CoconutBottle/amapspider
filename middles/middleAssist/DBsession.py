@@ -21,7 +21,7 @@ class Msession(object):
                                               MysqlHost["db"])
         )
         self.mysql_engine = create_engine(
-            "mysql+pymysql://%s:%s@%s:%d/%s?charset=UTF-8"%(MysqlHost["user"],
+            "mysql://%s:%s@%s:%d/%s?charset=utf8"%(MysqlHost["user"],
                                               MysqlHost["passwd"],
                                               MysqlHost["host"],
                                               MysqlHost["port"],

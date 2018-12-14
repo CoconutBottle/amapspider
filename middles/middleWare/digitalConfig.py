@@ -9,6 +9,7 @@ sys.path.append(parentUrl)
 
 import re
 import datetime
+import time
 
 def fuckAntiNum(strDate):
     """
@@ -127,5 +128,24 @@ def getdatelist(start, end=None, **kwargs):
             dates.append(datetime.datetime.strftime(i,'%Y-%m-%d'))
         return dates
 
+def get_week_anyday(ts=time.time(), N=0, D=0):
+
+    """
+
+    :param ts: 时间戳
+    :param N: 回溯周数
+    :param D: 回溯到哪一天
+    :return: ts
+    """
+    w = int(time.strftime("%w", time.localtime(ts)))
+    timestp = ts - (w-D) * 86400 - N*604800
+    return timestp
+
+def get_month_begin(ts=time.time()):
+    d = int(time.strftime("%d", time.localtime(ts)))
+    timestp = ts - (d-1) * 86400
+    return timestp
+
+
 if __name__ == '__main__':
-    print(getdatelist(start='2018-11-10', between=3,reverse=True))
+    print(time.strftime("%Y%m%d%S", time.localtime(get_month_begin())))

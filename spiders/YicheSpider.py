@@ -75,10 +75,11 @@ class Yiche(iimediaBase):
     def startRequest(url,  **kwargs):
         global headers
         print(url, kwargs['data'])
+        ip = {"https": ipProxy.ipRandom["https"]}
         head = dict(headers, **{"User-Agent":userAgent.user_agent})
         response = requests.post(url=url, data = json.dumps(kwargs["data"]),
-
-                                 headers=headers)
+				 proxies=ip,
+                                 headers=head)
         try:
             response = json.loads(response.content)
             return response
@@ -111,7 +112,7 @@ class Yiche(iimediaBase):
         obj_name = jsonpath(response, "$..series[*].name")
         for objd, objn in zip(obj_data, obj_name):
             data = dict(map(None, timeT, objd))
-            yield {"objname":"易车指数:市场大盘:%s:%s"%(name,objn),
+            yield {"objname":"易车指数##市场大盘##%s##%s"%(name,objn),
                    "data":data,
                    "unit":unit,
                    "freq":freq}, {"param":param1}
@@ -127,7 +128,7 @@ class Yiche(iimediaBase):
 
 
         this = self.allow_domains[0]+url_suffix
-        objprefix = "易车指数:市场大盘:份额趋势(近%d个月均值)"%step + ":%s"
+        objprefix = "易车指数##市场大盘##份额趋势(近%d个月均值)"%step + "##%s"
         suffix = url_suffix.split("/")[-1]
         param= {"timeType":"month"}
 
@@ -180,7 +181,7 @@ class Yiche(iimediaBase):
         carlevels = jsonpath(response0, "$..data[*].children")[0]
         for car in carlevels:
             self._SDBconn.hset("yiche:carlevel:series",car['value'], car['name'])
-            self._Mconn.insert(tbName="t_ext_seed_data",
+            self._Mconn.insert(tbName="t_ext_seed_data_copy",
                                seed = car['value'],
                                seed_val = car['name'],platform="Yiche",
                                note = obj0, level = 1)
@@ -199,7 +200,7 @@ class Yiche(iimediaBase):
             pseed     = node['value']
             pname     = node['name']
             print(pname, pseed)
-            self._Mconn.insert(tbName="t_ext_seed_data",
+            self._Mconn.insert(tbName="t_ext_seed_data_copy",
                                seed  = pseed,
                                seed_val = pname, platform='Yiche',
                                level=-1)
@@ -207,10 +208,11 @@ class Yiche(iimediaBase):
                 value, name = car['value'], car['displayName']
                 self._SDBconn.hset("yiche:carlevel:model",value, name)
                 del car['isChecked'], car['saleStatus']
-                self._Mconn.insert(tbName="t_ext_seed_data",
+                self._Mconn.insert(tbName="t_ext_seed_data_copy",
                                    seed  = value,
                                    seed_val = name, platform='Yiche',
-                                   pseed = pseed, level = 0,
+                                   pseed = pseed if pseed  else "",
+                                   level = 0,
                                    note = str(car))
                 # self._Mconn.insert(tbName="t_ext_plat_menu",
                 #                    plat_id = 5,
@@ -229,8 +231,8 @@ class Yiche(iimediaBase):
                       "timeType":"month" if i else "day",
                       "fromTime":"2017-01-01",
                       "toTime":lastdate}
-            tt = name.split(":")
-            nam = ":".join(tt[:-1] + [model]+tt[-1:])
+            tt = name.split("##")
+            nam = "##".join(tt[:-1] + [model]+tt[-1:])
             url = self.allow_domains[0]  + self.obj_urls[7+i]
             response = Yiche.startRequest(url=url, data= param7)
 
@@ -252,7 +254,7 @@ class Yiche(iimediaBase):
         objtime  = EasyMethod.fuckMonthEnd(re.sub("[^0-9]","",objtime))
         objdata  = jsonpath(response, "$..tbody")[0]
         for obj in objdata:
-            yield {"objname":"%s:%s:%s"%(name, objname, obj['name']),
+            yield {"objname":"%s##%s##%s"%(name, objname, obj['name']),
                    "data":{objtime:obj['index']},
                    "unit":"辆","freq":4}, {"param":param9}
 

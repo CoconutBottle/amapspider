@@ -19,7 +19,7 @@ from middles.middlePool import userAgent
 
 class Robo(iimediaBase):
     def __init__(self,hkey="Robo"):
-        super(Robo, self).__init__()
+
         name = "RoboSpider"
         self.start_urls = 'https://gw.datayes.com/rrp_adventure/web/supervisor/macro/level/0'
         self.urlContainer = [
@@ -77,7 +77,7 @@ class Robo(iimediaBase):
                     print(items())
                     yield items()
         except Exception as e:
-            print(e)
+            print("exception", e)
 
 
     def parse(self, code, **kwargs):
@@ -92,7 +92,7 @@ class Robo(iimediaBase):
         items = RoboItem()
         try:
             dateValue = jsonpath.jsonpath(response, "$..periodDate")
-            dateValue = map(Ey.fuckAntiNum, dateValue)
+            #dateValue = map(Ey.fuckAntiNum, dateValue)
             #print(jsonpath.jsonpath(response, "$..dataValue"))
             items.data = dict(zip(dateValue,
                                   jsonpath.jsonpath(response, "$..dataValue")))

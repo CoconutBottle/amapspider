@@ -31,7 +31,7 @@ def try_except_callself(f):
         except Exception as e:
             print(e)
             print("sleep 300 sec!")
-            time.sleep(10)
+            time.sleep(300)
             return f(*args, **kwargs)
 
     return wrap

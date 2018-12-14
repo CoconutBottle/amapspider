@@ -1,0 +1,14 @@
+{
+  "SpiderName":{
+    "field":{
+      "xxx":{
+        "chiName":"字段中文名String",
+        "pattern":"匹配规则String",
+        "filter":"过滤规则String"
+
+      }
+    },
+    "crawlUrl":"爬取链接String",
+    "method":"加载方式：1 json 2 html 3 re 4 xml Integer"
+  }
+}

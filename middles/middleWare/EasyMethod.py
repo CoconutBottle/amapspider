@@ -6,38 +6,20 @@ import os
 currentUrl = os.path.dirname(__file__)
 parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(parentUrl)
-import digitalConfig
 import re
 
-
-
 def fuckAntiNum(strDate):
-    """
-    all use
-    :param strDate:
-    :return:
-    """
-    digitalConfig.fuckAntiNum(strDate)
-
+    return re.sub("[^0-9]", "", strDate)
 
 def KeepNum(data):
-    """
-    all use
-    :param data:
-    :return:
-    """
-    digitalConfig.KeepNum(data)
-
+    tmp = {}
+    for i in data:
+        if re.search("\d[.0-9]+", data[i]):
+            tmp[i] = data[i]
+    return tmp
 
 
 def fuckMonthEnd(md="", d=0, **kwargs):
-    """
-    all use
-    :param md:
-    :param d:
-    :param kwargs:
-    :return:
-    """
     import  calendar
     try:
         if md =="":raise ValueError
@@ -66,19 +48,21 @@ def fuckMonthEnd(md="", d=0, **kwargs):
 
 
 def frequency2id(frq):
-    """
-    all use
-    :param frq:
-    :return:
-    """
-    digitalConfig.frequency2id(frq)
+    frq = frq.decode("utf8", "ignore")
+    if re.search("日|天|day".decode("utf8", "ignore"), frq):
+        return 2
+    elif re.search("week|周".decode("utf8", "ignore"), frq):
+        return 3
+    elif re.search("月|month".decode("utf8", "ignore"), frq):
+        return 4
+    elif re.search("季|season".decode("utf8", "ignore"), frq):
+        return 5
+    elif re.search("year|年".decode("utf8", "ignore"), frq):
+        return 6
+    else:
+        return 100
 
 def cookiesSmooth(cookies):
-    """
-    all use
-    :param cookies:
-    :return:
-    """
     s = ""
     for i in cookies.keys():
         tmp = i+"="+cookies[i]
@@ -90,12 +74,6 @@ import urllib
 import cookielib
 
 def loginWeb(user_data, loginurl):
-     """
-     undefine
-     :param user_data:
-     :param loginurl:
-     :return:
-     """
      data=user_data  #登陆用户名和密码
      post_data=urllib.urlencode(data)   #将post消息化成可以让服务器编码的方式
      cj=cookielib.CookieJar()   #获取cookiejar实例
@@ -110,13 +88,6 @@ def loginWeb(user_data, loginurl):
          print '[', index, ']', cookie;
 
 def login(url, cookies, user_data):
-    """
-    only Robo use
-    :param url:
-    :param cookies:
-    :param user_data:
-    :return:
-    """
     import requests, settings
     url = url
     ct = requests.post(url=url, data=user_data,proxies=settings.ipProxy,
@@ -135,12 +106,6 @@ def RepeatLogin(url, cookies, user_data):
 
 
 def RoboEasyLogin(key,mode=1):
-    """
-    only Robo Use
-    :param key:
-    :param mode:
-    :return:
-    """
     if mode == 0:
         from middles.middleAssist import redisAsisst
         Rs = redisAsisst.imredis().connection()

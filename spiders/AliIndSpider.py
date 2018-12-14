@@ -98,6 +98,8 @@ class AliInd(iimediaBase):
 
         tree = html.fromstring(response)
         data_key = tree.xpath(xpathRules.xkey.format(kwargs['layer']))
+
+
         data_key = chain(data_key, tree.xpath(xpathRules.xhkey.format(kwargs['layer'])))
 
         data_title = tree.xpath(xpathRules.xname.format(kwargs['layer']))
@@ -117,9 +119,8 @@ class AliInd(iimediaBase):
                                seed_val=dtitle,
                                platform="Alizs",
                                level=0)
-
-        gs = [gevent.spawn(self.g_event, p, layer) for p in data_key]
-        gevent.joinall(gs)
+            if dkey == "-1":return 0
+            self.g_event(dkey=dkey, layer=layer)
 
 
 
@@ -160,7 +161,7 @@ class AliInd(iimediaBase):
         return self._Mconn
 
 
-
+## 获取seed
 def GenSeed(code, name=None):
     sql = "SELECT seed,seed_val FROM `t_ext_seed_data`" \
           " WHERE `platform` = 'Alizs' AND `pseed` = '%s'"%code
@@ -178,8 +179,7 @@ def process(code,name):
             ep.loadSQL(k)
         process(i[0], objname)
 
-
-if __name__ == '__main__':
+def main():
     from middles.middleWare import EasyUploadMenu
     p = AliInd(open_sql=True)
     ep = EasyUploadMenu.uploadMenu(
@@ -195,3 +195,9 @@ if __name__ == '__main__':
     process(0,"频道")
     # for i in p.parse_menu(cat='1033199', objname="Thisrt"):
     #     ep.loadSQL(i)
+
+if __name__ == '__main__':
+    p = AliInd(open_sql=True)
+    response = p.Request(p.start_urls, None)
+    p.parse_url(response=response,layer=1)
+

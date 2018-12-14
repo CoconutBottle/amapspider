@@ -51,12 +51,8 @@ class AliIndTubes(BaseTubes):
 
 
 
-count = 0
 
 def tmp_crawl(code,objname):
-    global count
-    if code == "0":pass
-    else:count = 1
     sql = "select seed, seed_val from t_ext_seed_data_copy where platform='Alizs'" \
           " and pseed=%s"%code
     # p = AliIndTubes()
@@ -70,11 +66,11 @@ def tmp_crawl(code,objname):
         for s in sql_result:
             name = "{}:{}".format(objname,s[1])
             name = re.sub("^:", "", name)
+	    p.tubes_detail(s[0], name)
+	    tmp_crawl(s[0],name)	
 
-            if count ==0:
-                p.tubes_detail()
-            gs.append(gevent.spawn(p.tubes_detail, s[0], name))
-        gevent.joinall(gs)
+            #gs.append(gevent.spawn(p.tubes_detail, s[0], name))
+        #gevent.joinall(gs)
 
 
 
@@ -82,6 +78,6 @@ def tmp_crawl(code,objname):
 if __name__ == '__main__':
 
 
-    tmp_crawl(code="0", objname="商品大盘")
+    tmp_crawl(code="0", objname="")
     # for k in ("70", "67", "509"):
 
