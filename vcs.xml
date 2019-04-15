@@ -10,6 +10,10 @@
           <option name="url" value="https://github.com/cchinming/dataset.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/cchinming/appcrawl.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="F:\pycharm" />
