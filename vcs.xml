@@ -18,6 +18,10 @@
           <option name="url" value="https://github.com/cchinming/search.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/cchinm/python-spider.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="F:\pycharm" />
