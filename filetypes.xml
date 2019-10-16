@@ -6,6 +6,7 @@
       <mapping ext="csv" type="PLAIN_TEXT" />
       <mapping ext="ice" type="PLAIN_TEXT" />
       <mapping ext="qn" type="PLAIN_TEXT" />
+      <mapping pattern="test" type="Python" />
       <mapping pattern="d" type="XML" />
     </extensionMap>
   </component>
