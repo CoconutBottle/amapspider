@@ -8,6 +8,7 @@
       <mapping ext="qn" type="PLAIN_TEXT" />
       <mapping pattern="new" type="Python" />
       <mapping pattern="test" type="Python" />
+      <mapping pattern="LianXi" type="Python" />
       <mapping pattern="d" type="XML" />
     </extensionMap>
   </component>
